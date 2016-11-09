@@ -14,7 +14,8 @@ import com.itob.app.utils.AppUtils;
 import com.itob.app.utils.Constant;
 
 /**
- * Handles requests for the application home page.
+ * @author imran.khan
+ * @Description Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
