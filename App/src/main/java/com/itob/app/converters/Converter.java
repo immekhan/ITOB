@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.itob.app.info.BusinessResponse;
 import com.itob.app.info.Department;
+import com.itob.app.info.DepartmentsModelBean;
 
 public class Converter {
 	public BusinessResponse getDeptCount(int resultCount) {
@@ -28,6 +29,12 @@ public class Converter {
 	public Department convertRequest(String departmentName) {
 		Department department = new Department();
 		department.setDepartmentId(400L);
+		department.setDepartmentName(departmentName);
+		return department;
+	}
+	
+	public DepartmentsModelBean convertRequestModelBean(String departmentName) {
+		DepartmentsModelBean department = new DepartmentsModelBean();
 		department.setDepartmentName(departmentName);
 		return department;
 	}
