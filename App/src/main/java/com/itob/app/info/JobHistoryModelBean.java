@@ -49,7 +49,7 @@ public class JobHistoryModelBean {
     }
 
     @Basic
-    @Column(name = "JOB_ID")
+    @Column(name = "JOB_ID", insertable=false, updatable=false)
     public String getJobId() {
         return jobId;
     }

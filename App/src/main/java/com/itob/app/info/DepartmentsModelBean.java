@@ -40,7 +40,7 @@ public class DepartmentsModelBean {
     }
 
     @Basic
-    @Column(name = "MANAGER_ID")
+    @Column(name = "MANAGER_ID", insertable=false, updatable=false)
     public Long getManagerId() {
         return managerId;
     }
@@ -50,7 +50,7 @@ public class DepartmentsModelBean {
     }
 
     @Basic
-    @Column(name = "LOCATION_ID")
+    @Column(name = "LOCATION_ID", insertable=false, updatable=false)
     public Long getLocationId() {
         return locationId;
     }

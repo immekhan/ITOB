@@ -69,7 +69,7 @@ public class LocationsModelBean {
     }
 
     @Basic
-    @Column(name = "COUNTRY_ID")
+    @Column(name = "COUNTRY_ID", insertable=false, updatable=false)
     public String getCountryId() {
         return countryId;
     }

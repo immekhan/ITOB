@@ -3,6 +3,7 @@ package com.itob.app.info;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -28,7 +29,7 @@ public class EmpDetailsViewModelBean {
     private String countryName;
     private String regionName;
 
-    @Basic
+    @Id
     @Column(name = "EMPLOYEE_ID")
     public long getEmployeeId() {
         return employeeId;

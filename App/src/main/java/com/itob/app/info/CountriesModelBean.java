@@ -36,7 +36,7 @@ public class CountriesModelBean {
     }
 
     @Basic
-    @Column(name = "REGION_ID")
+    @Column(name = "REGION_ID", insertable=false, updatable=false)
     public Long getRegionId() {
         return regionId;
     }

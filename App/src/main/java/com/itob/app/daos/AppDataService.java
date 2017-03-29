@@ -25,7 +25,7 @@ public class AppDataService implements CustomDepartmentRepository {
 	public int getDeptCount() throws Exception {
 		String sql = "select count(*) from departments";
 		@SuppressWarnings("deprecation")
-		int resultCount = jdbcTemplate.queryForInt(sql);
+		int resultCount = 0;//jdbcTemplate.queryForInt(sql);
 		System.out.println("Count is: " + resultCount);
 		return resultCount;
 	}
