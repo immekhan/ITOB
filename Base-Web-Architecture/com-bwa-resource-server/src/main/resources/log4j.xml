@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//log4j/log4j Configuration//EN" "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="RollingAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="../logs/bwa.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd-HH'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%-5p] %c{1}:%L - %m%n"/>
+            <!--<param name="ConversionPattern" value="%d [%p] %c %M  - %m%n"/>-->
+        </layout>
+    </appender>
+
+    <logger name="org.hibernate" additivity="false">
+        <level value="error"/>
+    </logger>
+
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="RollingAppender" />
+    </root>
+
+</log4j:configuration>
