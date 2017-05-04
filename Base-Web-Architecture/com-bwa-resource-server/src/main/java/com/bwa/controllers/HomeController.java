@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Hassnain on 08/02/2017.
@@ -73,4 +70,20 @@ public class HomeController {
     }
 
 
+    @CrossOrigin
+    @RequestMapping(value = "/getMenu", method = { RequestMethod.GET }, produces = Constant.APPLICATION_JSON)
+    @ResponseBody
+    public Object getMenu() {
+        String response = null;
+        String [] menuArray={"ABC.html","ABC1.html"};
+        try {
+            logger.info("Called getMene");
+//            Long totalDepartments = userEndpoint.getTotalUserCount();
+            response = AppUtils.convertToJson(menuArray);
+            logger.info(response);
+        } catch (Exception e) {
+            logger.error("Exception Occured:" + e);
+        }
+        return response;
+    }
 }
