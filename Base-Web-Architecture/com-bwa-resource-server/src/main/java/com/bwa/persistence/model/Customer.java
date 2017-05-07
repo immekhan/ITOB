@@ -76,8 +76,8 @@ public class Customer
     private String mobileNo;
 
     @Basic(optional = true)
-    @Column(name = "USERNAME" , nullable = true)
-    private String userName;
+    @Column(name = "USER_ID" , nullable = true)
+    private String userId;
 
     @Basic(optional = true)
     @Column(name = "EMAIL" , nullable = true)
@@ -218,12 +218,12 @@ public class Customer
         this.mobileNo = mobileNo;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

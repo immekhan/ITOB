@@ -1,4 +1,4 @@
-package com.bwa.persistence.custom.repository;
+package com.bwa.persistence.repository.custom;
 
 /**
  * Created by Hassnan.Ali on 5/4/2017.

@@ -1,7 +1,7 @@
 package com.bwa.persistence.repository;
 
-import com.bwa.persistence.custom.repository.UserRepositoryCustom;
 import com.bwa.persistence.model.UserMBean;
+import com.bwa.persistence.repository.custom.UserRepositoryCustom;
 
 public interface UserRepository extends BaseRepository<UserMBean,Long> , UserRepositoryCustom {
 

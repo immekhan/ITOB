@@ -1,6 +1,6 @@
-package com.bwa.persistence.custom.repository.impl;
+package com.bwa.persistence.repository.custom.impl;
 
-import com.bwa.persistence.custom.repository.CustomerRepositoryCustom;
+import com.bwa.persistence.repository.custom.CustomerRepositoryCustom;
 
 /**
  * Created by Hassnan.Ali on 5/4/2017.
