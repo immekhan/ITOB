@@ -11,6 +11,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 
@@ -67,5 +68,10 @@ class PersistenceContext {
         return txManager;
     }
 
+    @Bean
+    JdbcTemplate jdbcTemplate(DataSource dataSource){
+        JdbcTemplate jdbcTemplate=new JdbcTemplate(dataSource);
+        return jdbcTemplate;
+    }
 
 }

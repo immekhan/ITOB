@@ -3,8 +3,6 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.IdEntry;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Locale;
 import java.util.TimeZone;
 
