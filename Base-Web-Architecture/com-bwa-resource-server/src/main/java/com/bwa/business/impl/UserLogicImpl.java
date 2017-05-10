@@ -1,6 +1,8 @@
 package com.bwa.business.impl;
 
+import com.bwa.business.ICustomerLogic;
 import com.bwa.business.IUserLogic;
+import com.bwa.persistence.model.Customer;
 import com.bwa.persistence.model.UserMBean;
 import com.bwa.persistence.repository.RolePrivilegeRepository;
 import com.bwa.persistence.repository.UserRepository;
@@ -27,6 +29,9 @@ public class UserLogicImpl implements IUserLogic {
     @Autowired
     private RolePrivilegeRepository rolePrivilegeRepository;
 
+    @Autowired
+    private ICustomerLogic customerLogic;
+
     @Transactional
     @Override
     public long getTotalUserCount() {
@@ -42,6 +47,9 @@ public class UserLogicImpl implements IUserLogic {
         for(String priv: privilegeList){
             LOG.info("Privilege  : "+priv);
         }*/
+        Long customerId=customerLogic.saveCustomer(1l,"01",
+                "userName","03212414235",
+                "first Name","last Name","abc@abc.com","password");
         return userRepository.count();
     }
 
