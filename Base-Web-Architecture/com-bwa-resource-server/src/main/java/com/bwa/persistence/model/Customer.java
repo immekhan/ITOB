@@ -114,12 +114,12 @@ public class Customer
         this.dbActive = dbActive;
     }
 
-    public Character getDbTest() {
-        return dbTest;
+    public boolean getDbTest() {
+        return dbTest.equals('Y');
     }
 
-    public void setDbTest(Character dbTest) {
-        this.dbTest = dbTest;
+    public void setDbTest(boolean isTest) {
+        this.dbTest = isTest?'Y':'N';
     }
 
     public Integer getBlacklistReason() {
