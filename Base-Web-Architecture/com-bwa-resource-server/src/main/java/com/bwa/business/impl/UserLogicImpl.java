@@ -20,9 +20,14 @@ import java.util.Optional;
  */
 @Component
 public class UserLogicImpl implements IUserLogic {
+    /**
+     * This is used for logging.
+     */
+    private static final Logger LOG = Logger.getLogger(UserLogicImpl.class);
 
-    private static final Logger LOG=Logger.getLogger(UserLogicImpl.class);
-
+    /**
+     * User Repository.
+     */
     @Autowired
     private UserRepository userRepository;
 
@@ -34,7 +39,7 @@ public class UserLogicImpl implements IUserLogic {
 
     @Transactional
     @Override
-    public long getTotalUserCount() {
+    public final long getTotalUserCount() {
         UserMBean userMBean = new UserMBean();
         userMBean.setAddressId("00001");
         userMBean.setPhoneNo("090078601");
@@ -55,8 +60,8 @@ public class UserLogicImpl implements IUserLogic {
 
     @Transactional
     @Override
-    public boolean deleteUserById(Long id){
-        Optional<UserMBean> userMBean=userRepository.findOne(id);
+    public final boolean deleteUserById(final Long id) {
+        Optional<UserMBean> userMBean = userRepository.findOne(id);
         userRepository.delete(userMBean.get());
         return true;
     }
