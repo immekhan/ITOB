@@ -43,7 +43,7 @@ var EcommerceOrdersView = function () {
                 Metronic.alert({type: 'danger', icon: 'warning', message: 'No record selected', container: grid.getTableWrapper(), place: 'prepend'});
             }
         });
-    }
+    };
 
     var handleCreditMemos = function () {
 
@@ -71,7 +71,7 @@ var EcommerceOrdersView = function () {
             }
         });
 
-    }
+    };
 
     var handleShipment = function () {
 
@@ -98,7 +98,7 @@ var EcommerceOrdersView = function () {
                 "aaSorting": [[ 0, "asc" ]] // set first column as a default sort by asc
             }
         });
-    }
+    };
 
     var handleHistory = function () {
 
@@ -145,7 +145,7 @@ var EcommerceOrdersView = function () {
                 Metronic.alert({type: 'danger', icon: 'warning', message: 'No record selected', container: grid.getTableWrapper(), place: 'prepend'});
             }
         });
-    } 
+    };
 
     var initPickers = function () {
         //init date pickers
@@ -161,7 +161,7 @@ var EcommerceOrdersView = function () {
             pickerPosition: (Metronic.isRTL() ? "bottom-right" : "bottom-left"),
             minuteStep: 10
         });
-    }
+    };
 
     return {
 

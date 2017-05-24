@@ -152,7 +152,7 @@
 						function (e) {
 							if (clicked) {
 								// bubble the event up to the document to trigger the unbind.
-								return;
+
 							} else {
 								clicked = true;
 								start(e);

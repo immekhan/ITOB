@@ -36,7 +36,7 @@ var Layout = function () {
             }            
             content.attr('style', 'min-height:' + height + 'px'); 
         }
-    }
+    };
 
     // Handle sidebar menu
     var handleSidebarMenu = function () {
@@ -179,7 +179,7 @@ var Layout = function () {
                 }
             });
         });
-    }
+    };
 
     // Helper function to calculate sidebar height for fixed sidebar layout.
     var _calculateFixedSidebarViewportHeight = function () {
@@ -189,7 +189,7 @@ var Layout = function () {
         }
 
         return sidebarHeight;
-    }
+    };
 
     // Handles fixed sidebar
     var handleFixedSidebar = function () {
@@ -223,7 +223,7 @@ var Layout = function () {
             });
             handleSidebarAndContentHeight();
         }
-    }
+    };
 
     // Handles sidebar toggler to close/hide the sidebar.
     var _initFixedSidebarHoverEffect = function() {
@@ -239,7 +239,7 @@ var Layout = function () {
                 }
             });
         }
-    }
+    };
 
     // Hanles sidebar toggler
     var handleSidebarToggler = function () {
@@ -308,7 +308,7 @@ var Layout = function () {
                 $('.sidebar-search').submit();
             }
         });
-    }
+    };
 
     // Handles the horizontal menu
     var handleHorizontalMenu = function () {
@@ -353,7 +353,7 @@ var Layout = function () {
         $(document).on('click', '.mega-menu-dropdown .dropdown-menu', function(e) {
             e.stopPropagation();
         });
-    }
+    };
 
     // Handles Bootstrap Tabs.
     var handleTabs = function () {
@@ -361,7 +361,7 @@ var Layout = function () {
         $('body').on('shown.bs.tab', 'a[data-toggle="tab"]', function () {
             handleSidebarAndContentHeight();
         });
-    }        
+    };
 
     // Handles the go to top button at the footer
     var handleGoTop = function () {
@@ -370,7 +370,7 @@ var Layout = function () {
             Metronic.scrollTo();
             e.preventDefault();
         });
-    }
+    };
 
     // Hanlde 100% height elements(block, portlet, etc)
     var handle100HeightContent = function() {
@@ -383,7 +383,7 @@ var Layout = function () {
                 });
                 target.find(".full-height-content-body").removeAttr('style').removeAttr('data-initialized');
             } 
-        } 
+        };
 
         var target = $('.full-height-content');
         if (target.size() === 0 || $(window).width() < 992) {
@@ -428,7 +428,7 @@ var Layout = function () {
                 target.css('min-height', height);
             }   
         }        
-    }
+    };
     
     // Handle Theme Settings
     var handleTheme = function () {
@@ -468,7 +468,7 @@ var Layout = function () {
             }
 
             $('body > .container').remove();
-        }
+        };
 
         var lastSelectedLayout = '';
 
@@ -566,7 +566,7 @@ var Layout = function () {
 
             handleSidebarAndContentHeight(); // fix content height            
             handleFixedSidebar(); // reinitialize fixed sidebar
-        }
+        };
 
         // handle theme colors
         var setColor = function (color) {
@@ -580,7 +580,7 @@ var Layout = function () {
             if ($.cookie) {                
                 $.cookie('style_color', color);
             }
-        }
+        };
 
         $('.toggler', panel).click(function () {
             $('.toggler').hide();
@@ -606,7 +606,7 @@ var Layout = function () {
         if ($.cookie && $.cookie('style_color')) {
             setColor($.cookie('style_color'));
         }
-    }
+    };
 
     //* END:CORE HANDLERS *//
 

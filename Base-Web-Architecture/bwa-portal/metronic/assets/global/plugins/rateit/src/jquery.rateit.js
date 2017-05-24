@@ -7,7 +7,7 @@
             resetLabel: 'reset rating',
             ratingLabel: 'rating'
         }
-    }
+    };
 
     $.fn.rateit = function (p1, p2) {
         //quick way out.
@@ -299,8 +299,7 @@
 
         first.target.dispatchEvent(simulatedEvent);
         event.preventDefault();
-    };
-
+    }
     //some default values.
     $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false};
 

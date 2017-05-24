@@ -39,8 +39,8 @@
 
       });
 
-    };
-    //}}}
+    }
+      //}}}
 
     // Use the API to find cropping dimensions
     // Then generate a random selection
@@ -54,9 +54,8 @@
         Math.round(Math.random() * dim[0]),
         Math.round(Math.random() * dim[1])
       ];
-    };
-
-    // This function is bound to the onRelease handler...
+    }
+      // This function is bound to the onRelease handler...
     // In certain circumstances (such as if you set minSize
     // and aspectRatio together), you can inadvertently lose
     // the selection. This callback re-enables creating selections
@@ -67,9 +66,8 @@
     {
       jcrop_api.setOptions({ allowSelect: true });
       $('#can_click').attr('checked',false);
-    };
-
-    // Attach interface buttons
+    }
+      // Attach interface buttons
     // This may appear to be a lot of code but it's simple stuff
     $('#setSelect').click(function(e) {
       // Sets a random selection

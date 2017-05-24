@@ -6,7 +6,7 @@ var TableAjax = function () {
             rtl: Metronic.isRTL(),
             autoclose: true
         });
-    }
+    };
 
     var handleRecords = function() {
 
@@ -57,7 +57,7 @@ var TableAjax = function () {
                 }
             });
 
-    }
+    };
 
     return {
 

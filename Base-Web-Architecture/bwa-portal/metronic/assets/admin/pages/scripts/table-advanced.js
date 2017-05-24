@@ -55,7 +55,7 @@ var TableAdvanced = function () {
         jQuery('.dataTables_filter input', tableWrapper).addClass("form-control input-small input-inline"); // modify table search input
         jQuery('.dataTables_length select', tableWrapper).addClass("form-control input-small"); // modify table per page dropdown
         jQuery('.dataTables_length select', tableWrapper).select2(); // initialize select2 dropdown
-    }
+    };
 
     var initTable2 = function () {
         var table = $('#sample_2');
@@ -113,7 +113,7 @@ var TableAdvanced = function () {
         jQuery('.dataTables_filter input', tableWrapper).addClass("form-control input-small input-inline"); // modify table search input
         jQuery('.dataTables_length select', tableWrapper).addClass("form-control input-small"); // modify table per page dropdown
         jQuery('.dataTables_length select', tableWrapper).select2(); // initialize select2 dropdown
-    }
+    };
 
     var initTable3 = function () {
         var table = $('#sample_3');
@@ -186,7 +186,7 @@ var TableAdvanced = function () {
                 oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
             }
         });
-    }
+    };
 
     var initTable4 = function () {
         var table = $('#sample_4');
@@ -266,7 +266,7 @@ var TableAdvanced = function () {
             var bVis = oTable.fnSettings().aoColumns[iCol].bVisible;
             oTable.fnSetColumnVis(iCol, (bVis ? false : true));
         });
-    }
+    };
 
     return {
 

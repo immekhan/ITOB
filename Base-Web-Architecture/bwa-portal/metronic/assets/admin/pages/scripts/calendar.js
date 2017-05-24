@@ -69,14 +69,14 @@ var Calendar = function () {
                     revert: true, // will cause the event to go back to its
                     revertDuration: 0 //  original position after the drag
                 });
-            }
+            };
 
             var addEvent = function (title) {
                 title = title.length == 0 ? "Untitled Event" : title;
                 var html = $('<div class="external-event label label-default">' + title + '</div>');
                 jQuery('#event_box').append(html);
                 initDrag(html);
-            }
+            };
 
             $('#external-events div.external-event').each(function () {
                 initDrag($(this))

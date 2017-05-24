@@ -9,7 +9,7 @@ var ComponentsPickers = function () {
             });
             $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
         }
-    }
+    };
 
     var handleTimePickers = function () {
 
@@ -38,7 +38,7 @@ var ComponentsPickers = function () {
                 $(this).parent('.input-group').find('.timepicker').timepicker('showWidget');
             });
         }
-    }
+    };
 
     var handleDateRangePickers = function () {
         if (!jQuery().daterangepicker) {
@@ -126,7 +126,7 @@ var ComponentsPickers = function () {
         );
         //Set the initial state of the picker label
         $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-    }
+    };
 
     var handleDatetimePicker = function () {
 
@@ -157,7 +157,7 @@ var ComponentsPickers = function () {
         });
 
         $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
-    }
+    };
 
     var handleClockfaceTimePickers = function () {
 
@@ -190,7 +190,7 @@ var ComponentsPickers = function () {
         $('.clockface_3').clockface({
             format: 'H:mm'
         }).clockface('show', '14:30');
-    }
+    };
 
     var handleColorPicker = function () {
         if (!jQuery().colorpicker) {
@@ -200,7 +200,7 @@ var ComponentsPickers = function () {
             format: 'hex'
         });
         $('.colorpicker-rgba').colorpicker();
-    }
+    };
    
 
     return {

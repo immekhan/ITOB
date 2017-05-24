@@ -47,7 +47,7 @@ var Inbox = function () {
             });
             jQuery.uniform.update(set);
         });
-    }
+    };
 
     var loadMessage = function (el, name, resetMenu) {
         var url = 'inbox_view.html';
@@ -84,13 +84,13 @@ var Inbox = function () {
             },
             async: false
         });
-    }
+    };
 
     var initWysihtml5 = function () {
         $('.inbox-wysihtml5').wysihtml5({
             "stylesheets": ["../../assets/global/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
         });
-    }
+    };
 
     var initFileupload = function () {
 
@@ -113,7 +113,7 @@ var Inbox = function () {
                     .appendTo('#fileupload');
             });
         }
-    }
+    };
 
     var loadCompose = function (el) {
         var url = 'inbox_compose.html';
@@ -151,7 +151,7 @@ var Inbox = function () {
             },
             async: false
         });
-    }
+    };
 
     var loadReply = function (el) {
         var url = 'inbox_reply.html';
@@ -190,7 +190,7 @@ var Inbox = function () {
             },
             async: false
         });
-    }
+    };
 
     var loadSearchResults = function (el) {
         var url = 'inbox_search_result.html';
@@ -222,7 +222,7 @@ var Inbox = function () {
             },
             async: false
         });
-    }
+    };
 
     var handleCCInput = function () {
         var the = $('.inbox-compose .mail-to .inbox-cc');
@@ -233,7 +233,7 @@ var Inbox = function () {
             input.hide();
             the.show();
         });
-    }
+    };
 
     var handleBCCInput = function () {
 
@@ -245,7 +245,7 @@ var Inbox = function () {
             input.hide();
             the.show();
         });
-    }
+    };
 
     var toggleButton = function(el) {
         if (typeof el == 'undefined') {
@@ -256,7 +256,7 @@ var Inbox = function () {
         } else {
             el.attr("disabled", true);
         }
-    }
+    };
 
     return {
         //main function to initiate the module

@@ -71,7 +71,7 @@ var EcommerceProductsEdit = function () {
 
         uploader.init();
 
-    }
+    };
 
     var handleReviews = function () {
 
@@ -92,7 +92,7 @@ var EcommerceProductsEdit = function () {
                 "aaSorting": [[ 0, "asc" ]] // set first column as a default sort by asc
             }
         });
-    }
+    };
 
     var handleHistory = function () {
 
@@ -113,7 +113,7 @@ var EcommerceProductsEdit = function () {
                 "aaSorting": [[ 0, "asc" ]] // set first column as a default sort by asc
             }
         });
-    } 
+    };
 
     var initComponents = function () {
         //init datepickers
@@ -137,7 +137,7 @@ var EcommerceProductsEdit = function () {
             alwaysShow: true,
             threshold: 5
         });
-    }
+    };
 
     return {
 

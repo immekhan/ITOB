@@ -602,6 +602,7 @@ $("selector).inputmask("Regex", {
 		return new RegExp(opts.regex).test(buffer.join(''));
 	}
 });
+
 ```
 
 ## Supported markup options
