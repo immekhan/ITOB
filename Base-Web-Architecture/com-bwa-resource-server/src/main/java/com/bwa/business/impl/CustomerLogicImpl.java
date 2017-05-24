@@ -25,14 +25,14 @@ public class CustomerLogicImpl implements ICustomerLogic {
     CredentialRepository credentialRepository;
 
     @Override
-    public Long saveCustomer(Long customerTypeId,String orgUnitId,String userName,
+    public Customer saveCustomer(Long customerTypeId,String orgUnitId,String userName,
                              String mobileNo, String firstName, String lastName,
-                             String emailId, String password) {
+                             String emailId) {
 
         Customer customer=new Customer();
         customer.setOrgUnit(orgUnitRepository.findOne(orgUnitId).get());
         customer.setCustomerType(customerTypeRepository.findOne(customerTypeId).get());
-        customer.setDisplayName(firstName+" "+lastName);
+        customer.setDisplayName(firstName + " " + lastName);
         customer.setActive(true);
         customer.setBlacklistReason(0);
         customer.setDbTest(false);
@@ -42,16 +42,36 @@ public class CustomerLogicImpl implements ICustomerLogic {
         customer.setCreator(0l);
         customer=customerRepository.save(customer);
 
+        return customer;
+    }
+
+    @Override
+    public Long signUp(Long customerTypeId, String orgUnitId, String userName, String mobileNo, String firstName, String lastName, String emailId, String password) {
+
+        Customer customer=saveCustomer( customerTypeId, orgUnitId, userName,
+                 mobileNo,  firstName,  lastName,
+                 emailId);
+
+        if(customer!=null){
+            saveCredentials( customer,  true,  password,  1,  1, new Date());
+        }else{
+            return 0l;
+        }
+        return customer.getId();
+    }
+
+    @Override
+    public Long saveCredentials(Customer customer, boolean isActive, String password, int credentialType, int credentialStatus, Date datCreation) {
+
         Credential credential=new Credential();
         credential.setCustomer(customer);
         credential.setActive(true);
         credential.setCredential(password);
-        credential.setCredentialType(1);
-        credential.setCredentialStatus(1);
+        credential.setCredentialType(credentialType);
+        credential.setCredentialStatus(credentialStatus);
         credential.setCreationDate(new Date());
         credentialRepository.save(credential);
 
-
-        return customer.getId();
+        return credential.getId();
     }
 }

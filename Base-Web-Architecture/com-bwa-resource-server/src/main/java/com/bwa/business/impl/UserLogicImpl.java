@@ -52,9 +52,9 @@ public class UserLogicImpl implements IUserLogic {
         for(String priv: privilegeList){
             LOG.info("Privilege  : "+priv);
         }*/
-        Long customerId=customerLogic.saveCustomer(1l,"01",
+        /*Long customerId=customerLogic.saveCustomer(1l,"01",
                 "userName","03212414235",
-                "first Name","last Name","abc@abc.com","password");
+                "first Name","last Name","abc@abc.com","password");*/
         return userRepository.count();
     }
 
