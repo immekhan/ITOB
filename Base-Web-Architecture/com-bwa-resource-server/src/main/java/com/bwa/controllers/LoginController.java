@@ -17,11 +17,11 @@ public class LoginController {
     @CrossOrigin
     @RequestMapping(value = "/signUp", method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
     @ResponseBody
-    public String singUp(@RequestParam("userName") String userName,
-                         @RequestParam("mobileNo") String mobileNo,
-                         @RequestParam("firstName") String firstName,
+    public String singUp(@RequestParam("firstName") String firstName,
                          @RequestParam("lastName") String lastName,
                          @RequestParam("emailId") String emailId,
+                         @RequestParam("mobileNo") String mobileNo,
+                         @RequestParam("userName") String userName,
                          @RequestParam("password") String password
                          ) {
         try {
