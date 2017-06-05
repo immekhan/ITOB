@@ -7,8 +7,8 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
     ];
 
     /*login models*/
-    $scope.loginUserName='username';
-    $scope.loginPassword='paswd';
+    $scope.loginUserName='';
+    $scope.loginPassword='';
 
     $scope.login=function(){
         $http({
@@ -31,12 +31,12 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
     }
 
     /*signUp models*/
-    $scope.firstName='firstName';
+    $scope.firstName='';
     $scope.lastName='lastName';
-    $scope.emailId='abac@abc.com';
+    $scope.emailId='';
     $scope.mobileNo='0324';
-    $scope.userName='userName';
-    $scope.password='password';
+    $scope.userName='';
+    $scope.password='';
 
     $scope.signUp=function() {
         $http({

@@ -82,7 +82,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN LOGIN -->
 <div class="content">
 	<!-- BEGIN LOGIN FORM -->
-	<form class="login-form" ng-submit="login()" method="post">
+	<form class="login-form"  method="post" name="loginForm">
 		<h3>{{mySuccess}}</h3>
 		<h3 class="form-title">Login to your account</h3>
 		<div class="alert alert-danger display-hide">
@@ -96,7 +96,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="input-icon">
 				<i class="fa fa-user"></i>
 				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"
-				ng-model="loginUserName"/>
+				ng-model="loginUserName" required/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -104,13 +104,13 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="input-icon">
 				<i class="fa fa-lock"></i>
 				<input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password"
-				ng-model="loginPassword"/>
+				ng-model="loginPassword" required/>
 			</div>
 		</div>
 		<div class="form-actions">
 			<label class="checkbox">
 			<input type="checkbox" name="remember" value="1"/> Remember me </label>
-			<button  class="btn green pull-right">
+			<button type="button" class="btn green pull-right" ng-click="login()">
 			Login <i class="m-icon-swapright m-icon-white"></i>
 			</button>
 		</div>
@@ -153,7 +153,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	</form>
 	<!-- END FORGOT PASSWORD FORM -->
 	<!-- BEGIN REGISTRATION FORM -->
-	<form class="register-form" method="post" ng-submit="signUp()">
+	<form class="register-form" method="post" name="registerForm">
 		<h3>Sign Up</h3>
 		<p>
 			 Enter your personal details below:
@@ -163,7 +163,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="input-icon">
 				<i class="fa fa-font"></i>
 				<input class="form-control placeholder-no-fix" type="text" placeholder="Full Name" name="fullname"
-				ng-model="firstName"/>
+				ng-model="firstName" required/>
 			</div>
 		</div>
 		<!--
@@ -191,7 +191,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="input-icon">
 				<i class="fa fa-envelope"></i>
 				<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email"
-					   ng-model="emailId"/>
+					   ng-model="emailId" required/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -457,7 +457,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="input-icon">
 				<i class="fa fa-user"></i>
 				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"
-					   ng-model="userName"/>
+					   ng-model="userName" required/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -465,7 +465,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="input-icon">
 				<i class="fa fa-lock"></i>
 				<input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Password" name="password"
-					   ng-model="password"/>
+					   ng-model="password" required/>
 			</div>
 		</div>
 		<div class="form-group">
@@ -479,7 +479,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		</div>
 		<div class="form-group">
 			<label>
-			<input type="checkbox" name="tnc"/> I agree to the <a href="#">
+			<input type="checkbox" name="tnc" required/> I agree to the <a href="#">
 			Terms of Service </a>
 			and <a href="#">
 			Privacy Policy </a>
@@ -490,7 +490,7 @@ License: You must have a valid license purchased only from themeforest(the above
 		<div class="form-actions">
 			<button id="register-back-btn" type="button" class="btn">
 			<i class="m-icon-swapleft"></i> Back </button>
-			<button type="submit" id="register-submit-btn" class="btn green pull-right">
+			<button type="submit" id="register-submit-btn" class="btn green pull-right" ng-click="registerForm.$valid && signUp()">
 			Sign Up <i class="m-icon-swapright m-icon-white"></i>
 			</button>
 		</div>
