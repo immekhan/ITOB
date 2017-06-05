@@ -1,4 +1,4 @@
-angular.module('loginApp', []).controller('loginController', function($scope, $http) {
+angular.module('loginApp', []).controller('loginController', function($scope, $http , $window) {
 
     $scope.names = [
         {name:'Jani',country:'Norway'},
@@ -6,6 +6,31 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
         {name:'Kai',country:'Denmark'}
     ];
 
+    /*login models*/
+    $scope.loginUserName='username';
+    $scope.loginPassword='paswd';
+
+    $scope.login=function(){
+        $http({
+            method : 'POST',
+            url : 'http://localhost:8080/base/login',
+            headers: {'Content-Type': 'application/json'},
+            params :
+                {
+                'userName':$scope.loginUserName,
+                'password':$scope.loginPassword
+            }
+        }).then(function mySuccess(response) {
+            $scope.mySuccess = response.data;
+            var url = "http://" + $window.location.host + "/base.web.architecture/bwa-portal/metronic/modules/admin/index.html";
+            // $log.log(url);
+            $window.location.href = url;
+        }, function myError(response) {
+            $scope.myError = response.statusText;
+        });
+    }
+
+    /*signUp models*/
     $scope.firstName='firstName';
     $scope.lastName='lastName';
     $scope.emailId='abac@abc.com';
@@ -26,9 +51,9 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
                 'password':$scope.password
             }
         }).then(function mySuccess(response) {
-            $scope.response = response.data;
+            $scope.mySuccess = response.data;
         }, function myError(response) {
-            $scope.response = response.statusText;
+            $scope.myError = response.statusText;
         });
     }
 

@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by Hassnain on 09/02/2017.
- */
 @Component
 public class UserLogicImpl implements IUserLogic {
     /**
