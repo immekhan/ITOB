@@ -116,11 +116,6 @@ var Login = function () {
 	            jQuery('.forget-form').show();
 	        });
 
-	        jQuery('#back-btn').click(function () {
-	            jQuery('.login-form').show();
-	            jQuery('.forget-form').hide();
-	        });
-
 	};
 
 	var handleRegister = function () {
@@ -234,12 +229,24 @@ var Login = function () {
 	        jQuery('#register-btn').click(function () {
 	            jQuery('.login-form').hide();
 	            jQuery('.register-form').show();
+	            jQuery('.success-form').hide();
 	        });
 
 	        jQuery('#register-back-btn').click(function () {
 	            jQuery('.login-form').show();
 	            jQuery('.register-form').hide();
-	        });
+                jQuery('.success-form').hide();
+
+            });
+
+        jQuery('#successForm-btn').click(function () {
+            jQuery('.login-form').show();
+        });
+
+        jQuery('#back-btn').click(function () {
+            jQuery('.login-form').show();
+            jQuery('.forget-form').hide();
+        });
 	};
     
     return {
