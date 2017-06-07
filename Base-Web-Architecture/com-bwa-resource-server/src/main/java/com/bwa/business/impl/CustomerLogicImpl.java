@@ -45,7 +45,7 @@ public class CustomerLogicImpl implements ICustomerLogic {
         return customer;
     }
 
-    @Override
+    @Override //todo needs to return code for success
     public Long signUp(Long customerTypeId, String orgUnitId, String userName, String mobileNo, String firstName, String lastName, String emailId, String password) {
 
         Customer customer=saveCustomer( customerTypeId, orgUnitId, userName,
@@ -61,7 +61,7 @@ public class CustomerLogicImpl implements ICustomerLogic {
     }
 
     @Override
-    public Long saveCredentials(Customer customer, boolean isActive, String password, int credentialType, int credentialStatus, Date datCreation) {
+    public void saveCredentials(Customer customer, boolean isActive, String password, int credentialType, int credentialStatus, Date datCreation) {
 
         Credential credential=new Credential();
         credential.setCustomer(customer);
@@ -71,7 +71,17 @@ public class CustomerLogicImpl implements ICustomerLogic {
         credential.setCredentialStatus(credentialStatus);
         credential.setCreationDate(new Date());
         credentialRepository.save(credential);
+    }
 
-        return credential.getId();
+    @Override
+    public Customer fetchCustomerByUserId(String userId, String idOrgUnit) {
+        //fetch the user by user id and orgUnit
+        return customerRepository.findByUserId(userId,idOrgUnit);
+    }
+
+    @Override
+    public Customer fetchCustomerByMobileNo(String mobile, String idOrgUnit) {
+        //fetch the user by user id and orgUnit
+        return customerRepository.findByUserId(mobile,idOrgUnit);
     }
 }

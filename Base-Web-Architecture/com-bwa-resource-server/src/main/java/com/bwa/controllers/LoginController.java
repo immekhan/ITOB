@@ -4,6 +4,7 @@ import com.bwa.business.ICustomerLogic;
 import com.bwa.business.ILoginLogic;
 import com.bwa.business.IUserLogic;
 import com.bwa.util.AppUtils;
+import com.bwa.util.CodeConstants;
 import com.bwa.util.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ public class LoginController {
     @Autowired
     private ILoginLogic loginLogic;
 
+    @Autowired
+    private LoginControllerValidation loginControllerValidation;
+//Response object
     @CrossOrigin
     @RequestMapping(value = "/signUp", method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
     @ResponseBody
@@ -33,11 +37,21 @@ public class LoginController {
                          @RequestParam("userName") String userName,
                          @RequestParam("password") String password
                          ) {
+
+        String response="";
         try {
 
-            Long customerId=customerLogic.signUp(1l,"01",userName,mobileNo,firstName,lastName,emailId,password);
-            if(customerId==null){
-                //failure page return
+            response=loginControllerValidation.validateSignUpRequest(firstName,lastName,emailId
+                    ,mobileNo,userName,password);
+
+            if(response.equals(CodeConstants.CODE_SUCCESS)) {
+
+                Long customerId = customerLogic.signUp(1l, "01", userName,
+                        mobileNo, firstName, lastName, emailId, password);
+
+                if (customerId == null) {
+                    //failure page return
+                }
             }
 
         } catch (Exception e) {

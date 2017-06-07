@@ -5,76 +5,85 @@ import com.bwa.business.ICustomerLogic;
 import com.bwa.persistence.model.Customer;
 import com.bwa.util.ControllerConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-abstract class LoginControllerValidation {
+@Component
+class LoginControllerValidation {
 
     @Autowired
     private ICustomerLogic customerLogic;
 
     public String validateSignUpRequest( String firstName, String lastName,
                                        String emailId, String mobileNo,
-                                       String userName, String password){
+                                       String userName, String password) {
 
-        if(firstName.isEmpty()){
+        if (firstName.isEmpty()) {
             //is required
         }
 
-        if( !firstName.matches(ControllerConstants.REGEX_FIRST_LAST_NAME)){
+        if (!firstName.matches(ControllerConstants.REGEX_FIRST_LAST_NAME)) {
             //is invalid
         }
 
-        if(firstName.length()<1 && firstName.length()>40){
+        if (firstName.length() < 1 && firstName.length() > 40) {
             //first name should be between 1 to 40 characters
         }
 
-        if(lastName.isEmpty()){
+        if (lastName.isEmpty()) {
             //is required
         }
 
-        if(!lastName.matches(ControllerConstants.REGEX_FIRST_LAST_NAME)){
+        if (!lastName.matches(ControllerConstants.REGEX_FIRST_LAST_NAME)) {
 
         }
 
-        if(lastName.length()<1 && lastName.length()>40){
+        if (lastName.length() < 1 && lastName.length() > 40) {
 
         }
 
-        if(emailId.isEmpty()){
+        if (emailId.isEmpty()) {
             //is required
         }
 
-        if(!emailId.matches(ControllerConstants.REGEX_EMAIL)){
+        if (!emailId.matches(ControllerConstants.REGEX_EMAIL)) {
 
         }
 
-        if(mobileNo.isEmpty()){
+        if (mobileNo.isEmpty()) {
             //is required
         }
 
-        if(!mobileNo.matches(ControllerConstants.REGEX_NUMERIC)){
+        if (!mobileNo.matches(ControllerConstants.REGEX_NUMERIC)) {
 
         }
 
-        if(userName.isEmpty()){
+        if (userName.isEmpty()) {
             //is required
         }
 
-        if (!userName.matches(ControllerConstants.REGEX_USERNAME)){
+        if (!userName.matches(ControllerConstants.REGEX_USERNAME)) {
 
         }
 
-        if (password.isEmpty()){
+        if (password.isEmpty()) {
             //is required
         }
 
-        if (password.length()<8 && password.length()>15){
+        if (password.length() < 8 && password.length() > 15) {
             //password length should be between 8 to 15
         }
 
         //db level validations
         //fetch customer by user name
         //s customer = customerLogic.
+        if (customerLogic.fetchCustomerByUserId(userName, "01") != null) {
+            //throw exception that user name is already taken
+        }
 
-        return "";
+        if (customerLogic.fetchCustomerByMobileNo(mobileNo, "01") != null) {
+            //throw exception that mobile number is already associate with another user
+        }
+
+        return "00";
     }
 }

@@ -48,7 +48,11 @@ public interface ICustomerLogic {
      * @param datCreation
      * @return credential id
      */
-    Long saveCredentials(Customer customer, boolean isActive
+    void saveCredentials(Customer customer, boolean isActive
             , String password, int credentialType
             , int credentialStatus, Date datCreation);
+
+    Customer fetchCustomerByUserId(String userId, String idOrgUnit);
+
+    Customer fetchCustomerByMobileNo(String mobile, String idOrgUnit);
 }
