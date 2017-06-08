@@ -24,5 +24,7 @@ public interface CustomerRepository extends BaseRepository<Customer,Long> , Cust
                                        @Param("userId") String userId,
                                        @Param("orgUnitId") String orgUnitId);
 
-
+    @Query("select c from Customer c where c.email = :emailId and c.orgUnit.id = :orgUnitId")
+    Customer findByEmailId(@Param("emailId") String emailId,
+                          @Param("orgUnitId") String orgUnitId);
 }

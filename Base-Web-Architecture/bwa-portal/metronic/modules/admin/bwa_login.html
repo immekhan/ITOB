@@ -156,6 +156,10 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- BEGIN REGISTRATION FORM -->
 	<form class="register-form" method="post" name="registerForm" ng-show="registerFormVisible">
 		<h3>Sign Up</h3>
+		<div class="alert alert-danger" ng-show="singUpErrorVisible">
+			<button class="close" data-close="alert"></button>
+			<span>{{singUpError}}</span>
+		</div>
 		<p>
 			 Enter your personal details below:
 		</p>
@@ -499,7 +503,7 @@ License: You must have a valid license purchased only from themeforest(the above
 			</div>
 		</div>
 		<div class="form-actions">
-			<button id="register-back-btn" type="button" class="btn">
+			<button id="register-back-btn" type="button" class="btn" ng-click="showLoginForm($event)">
 			<i class="m-icon-swapleft"></i> Back </button>
 			<button type="submit" id="register-submit-btn" class="btn green pull-right" ng-click="registerForm.$valid && signUp($event)">
 			Sign Up <i class="m-icon-swapright m-icon-white"></i>

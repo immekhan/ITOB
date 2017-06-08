@@ -1,9 +1,6 @@
-package com.bwa.contract.response;
+package com.bwa.controllers.response;
 
-/**
- * Created by Hassnain on 08/02/2017.
- */
-public class UserResponseBean {
+public class UserResponse {
 
     private Object responseInfo;
 

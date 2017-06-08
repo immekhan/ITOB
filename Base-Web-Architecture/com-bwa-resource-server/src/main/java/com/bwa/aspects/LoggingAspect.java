@@ -23,9 +23,9 @@ public class LoggingAspect {
 
     @Before("beforePointCut()")
     public void logBefore(JoinPoint joinPoint) {
-        System.out.println("Hello World");
-        System.out.println("Entering method : "+joinPoint.getSignature().getName());
-        System.out.println("joinPoint.getSignature().getClass(): "+joinPoint.getSignature().getClass());
+//        System.out.println("Hello World");
+//        System.out.println("Entering method : "+joinPoint.getSignature().getName());
+//        System.out.println("joinPoint.getSignature().getClass(): "+joinPoint.getSignature().getClass());
         LOG.info("Entering method : "+joinPoint.getSignature().getName());
     }
 }

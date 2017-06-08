@@ -4,6 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -32,15 +33,16 @@ import javax.sql.DataSource;
 })
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
+@EnableAspectJAutoProxy
 class PersistenceContext {
 
     @Bean(destroyMethod = "close")
     DataSource dataSource() {
         BasicDataSource dataSource =new BasicDataSource();
         dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:orcl");
+        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
         dataSource.setUsername("itob");
-        dataSource.setPassword("itob");
+        dataSource.setPassword("system");
         return dataSource;
     }
 

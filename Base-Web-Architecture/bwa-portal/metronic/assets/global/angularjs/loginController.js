@@ -44,15 +44,19 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
     }
 
     /*signUp models*/
+    $scope.singUpErrorVisible =false;
     $scope.firstName='';
     $scope.lastName='';
     $scope.emailId='';
     $scope.mobileNo='';
     $scope.userName='';
     $scope.password='';
+    $scope.rpassword='';
 
     $scope.signUp=function($event) {
         $event.preventDefault();//this is to prevent default page refresh
+        $scope.singUpError='';
+        $scope.singUpErrorVisible =false;
 
         $http({
             method: 'POST',
@@ -69,7 +73,7 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
         }).then(function mySuccess(response) {
             $scope.singUpResponse = response.data;
 
-            if ($scope.singUpResponse == 'Success') {
+            if ($scope.singUpResponse.status.code == '00') {
 
                 $scope.registerFormVisible = false;
                 $scope.signUpSuccessMsgVisible = true;
@@ -78,12 +82,17 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
                 $scope.firstName='';
                 $scope.lastName='';
                 $scope.emailId='';
-                $scope.mobileNo='0324';
+                $scope.mobileNo='';
                 $scope.userName='';
                 $scope.password='';
+                $scope.rpassword='';
+            }else{
+                $scope.singUpError=$scope.singUpResponse.status.msg;
+                $scope.singUpErrorVisible =true;
             }
         }, function myError(response) {
             $scope.signUpResponseError = response.statusText;
+
         });
 
     }
@@ -97,6 +106,17 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
         $event.preventDefault();//this is to prevent default page refresh
         $scope.signUpSuccessMsgVisible = false;
         // $scope.loginFormVisible=true;
+
+        //empty all fields
+        $scope.singUpErrorVisible =false;
+        $scope.singUpError='';
+        $scope.firstName='';
+        $scope.lastName='';
+        $scope.emailId='';
+        $scope.mobileNo='';
+        $scope.userName='';
+        $scope.password='';
+        $scope.rpassword='';
     }
 
 });

@@ -6,10 +6,10 @@ package com.bwa.business;
 public interface IUserLogic {
 
     /**
-     * return UserResponseBean by calling Dao which uses spring transaction template
+     * return UserResponse by calling Dao which uses spring transaction template
      * @return
      *
-    UserResponseBean getData();*/
+    UserResponse getData();*/
 
     /**
      * returns total number of department by call the DepartmentRepository
