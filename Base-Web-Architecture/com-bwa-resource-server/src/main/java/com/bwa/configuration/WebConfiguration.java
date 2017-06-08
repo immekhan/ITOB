@@ -3,6 +3,7 @@ package com.bwa.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc //<mvc:annotation-driven />
 @ComponentScan(basePackages = {"com.bwa.controllers"})
 @Configuration
+@EnableAspectJAutoProxy
 class WebConfiguration extends WebMvcConfigurerAdapter{
 
     @Override
