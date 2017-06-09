@@ -1,5 +1,6 @@
 angular.module('loginApp', []).controller('loginController', function($scope, $http , $window ) {
 
+    $scope.idOrgUnit='02';
     /*$scope.names = [
         {name:'Jani',country:'Norway'},
         {name:'Hege',country:'Sweden'},
@@ -44,7 +45,7 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
     }
 
     /*signUp models*/
-    $scope.singUpErrorVisible =false;
+    $scope.signUpErrorVisible =false;
     $scope.firstName='';
     $scope.lastName='';
     $scope.emailId='';
@@ -55,45 +56,50 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
 
     $scope.signUp=function($event) {
         $event.preventDefault();//this is to prevent default page refresh
-        $scope.singUpError='';
-        $scope.singUpErrorVisible =false;
+        $scope.signUpError='';
+        $scope.signUpErrorVisible =false;
 
-        $http({
-            method: 'POST',
-            url: 'http://localhost:8080/base/signUp',
-            headers: {'Content-Type': 'application/json'},
-            params: {
-                'firstName': $scope.firstName,
-                'lastName': $scope.lastName,
-                'emailId': $scope.emailId,
-                'mobileNo': $scope.mobileNo,
-                'userName': $scope.userName,
-                'password': $scope.password
-            }
-        }).then(function mySuccess(response) {
-            $scope.singUpResponse = response.data;
+        if($scope.password == $scope.rpassword) {
 
-            if ($scope.singUpResponse.status.code == '00') {
+            $http({
+                method: 'POST',
+                url: 'http://localhost:8080/base/signUp',
+                headers: {'Content-Type': 'application/json'},
+                params: {
+                    'firstName': $scope.firstName,
+                    'lastName': $scope.lastName,
+                    'emailId': $scope.emailId,
+                    'mobileNo': $scope.mobileNo,
+                    'userName': $scope.userName,
+                    'password': $scope.password,
+                    'rpassword': $scope.rpassword,
+                    'idOrgUnit': $scope.idOrgUnit
+                }
+            }).then(function mySuccess(response) {
+                $scope.singUpResponse = response.data;
 
-                $scope.registerFormVisible = false;
-                $scope.signUpSuccessMsgVisible = true;
+                if ($scope.singUpResponse.status.code == '00') {
 
-                //empty all fields
-                $scope.firstName='';
-                $scope.lastName='';
-                $scope.emailId='';
-                $scope.mobileNo='';
-                $scope.userName='';
-                $scope.password='';
-                $scope.rpassword='';
-            }else{
-                $scope.singUpError=$scope.singUpResponse.status.msg;
-                $scope.singUpErrorVisible =true;
-            }
-        }, function myError(response) {
-            $scope.signUpResponseError = response.statusText;
+                    $scope.registerFormVisible = false;
+                    $scope.signUpSuccessMsgVisible = true;
 
-        });
+                    //empty all fields
+                    $scope.firstName = '';
+                    $scope.lastName = '';
+                    $scope.emailId = '';
+                    $scope.mobileNo = '';
+                    $scope.userName = '';
+                    $scope.password = '';
+                    $scope.rpassword = '';
+                } else {
+                    $scope.signUpError = $scope.singUpResponse.status.msg;
+                    $scope.signUpErrorVisible = true;
+                }
+            }, function myError(response) {
+                $scope.signUpError = response.statusText;
+                $scope.signUpErrorVisible = true;
+            });
+        }
 
     }
 
@@ -108,8 +114,8 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
         // $scope.loginFormVisible=true;
 
         //empty all fields
-        $scope.singUpErrorVisible =false;
-        $scope.singUpError='';
+        $scope.signUpErrorVisible =false;
+        $scope.signUpError='';
         $scope.firstName='';
         $scope.lastName='';
         $scope.emailId='';

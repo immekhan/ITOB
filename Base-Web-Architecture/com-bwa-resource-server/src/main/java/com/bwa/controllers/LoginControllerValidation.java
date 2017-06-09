@@ -23,10 +23,15 @@ class LoginControllerValidation {
 
     @Autowired
     private IUtilityLogic utilityLogic;
-    //todo aop work
+
+    @Autowired
+    private UtilityValidation utilityValidation;
+
     public String validateSignUpRequest( String firstName, String lastName,
                                          String emailId, String mobileNo,
-                                         String userName, String password) throws SignUpException{
+                                         String userName, String password,
+                                         String rTpassword , String idOrgUnit) throws CustomException {
+
 
         if (firstName==null || firstName.isEmpty()) {
 //            LOG.info("Fist Name is required");
@@ -99,29 +104,31 @@ class LoginControllerValidation {
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_MOBILE_NO_INVALID,new Object[]{mobileNo}));
         }
 
-        try {
-            //validate user name and password
-            validateUserNameAndPassword( userName, password);
-
-        } catch (CustomException e) {
-            throw new SignUpException(e.getMessage());
+        if (!password.equals(rTpassword)) {
+//            LOG.info(Password and confirm password did not match);
+            throw new SignUpException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_PASSWORD_CONFIRM_PASSWORD_MISMATCH,new Object[]{mobileNo}));
         }
 
 
+        //validate user name and password
+        validateUserNameAndPassword( userName, password,idOrgUnit);
+
+
         //db level validations
-        if (customerLogic.fetchCustomerByEmailId(emailId, "01") != null) {
+        if (customerLogic.fetchCustomerByEmailId(emailId, idOrgUnit) != null) {
 //            LOG.info("User Name : '"+userName+"' is not available");
             throw new SignUpException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_EMAIL_ID_ALREADY_EXIST,new Object[]{emailId}));
         }
 
-        if (customerLogic.fetchCustomerByUserId(userName, "01") != null) {
+        if (customerLogic.fetchCustomerByUserId(userName, idOrgUnit) != null) {
 //            LOG.info("User Name : '"+userName+"' is not available");
             throw new SignUpException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_ALREADY_EXIST,new Object[]{userName}));
         }
 
-        if (customerLogic.fetchCustomerByMobileNo(mobileNo, "01") != null) {
+        if (customerLogic.fetchCustomerByMobileNo(mobileNo, idOrgUnit) != null) {
 //            LOG.info("Mobile No : '"+mobileNo+"' is already associated with other user");
             throw new SignUpException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_MOBILE_NO_ALREADY_EXIST,new Object[]{mobileNo}));
@@ -130,26 +137,41 @@ class LoginControllerValidation {
         return CodeConstants.CODE_SUCCESS;
     }
 
-    public String validateLoginRequest( String userName, String password) throws LoginException{
+    public String validateLoginRequest( String userName, String password , String idOrgUnit) throws CustomException{
 
-        try {
-            //validate user name and password
-            validateUserNameAndPassword( userName, password);
-
-        } catch (CustomException e) {
-            throw new LoginException(e.getMessage());
-        }
+        //validate user name and password
+        validateUserNameAndPassword( userName, password,idOrgUnit);
 
         //db level validations
-        if (customerLogic.fetchCustomerByUserId(userName, "01") == null) {
+        if (customerLogic.fetchCustomerByUserId(userName, idOrgUnit) == null) {
             throw new LoginException(utilityLogic
-                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_ALREADY_EXIST,new Object[]{}));
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_DOES_NOT_EXIST,new Object[]{}));
         }
 
         return  CodeConstants.CODE_SUCCESS;
     }
 
-    private void validateUserNameAndPassword( String userName, String password) throws CustomException{
+    private void validateUserNameAndPassword( String userName, String password,String idOrgUnit) throws CustomException{
+
+        if (idOrgUnit==null || idOrgUnit.isEmpty()) {
+//            LOG.info("Organization code is required");
+            throw new SignUpException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_ORGANIZATION_ID_REQUIRED,new Object[]{}));
+        }
+
+        if (!idOrgUnit.matches(ControllerConstants.REGEX_ALPHANUMERIC)) {
+//            LOG.info("Organization id ''{0]'' is invalid");
+            throw new SignUpException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_ORGANIZATION_ID_INVALID,new Object[]{idOrgUnit}));
+
+        }
+
+        if (utilityValidation.isValidOrgUnitId(idOrgUnit)) {
+//            LOG.info("Organization id ''{0]'' is invalid");
+            throw new SignUpException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_ORGANIZATION_ID_INVALID,new Object[]{idOrgUnit}));
+
+        }
 
         if (userName==null ||userName.isEmpty()) {
 //            LOG.info("User Name is required");

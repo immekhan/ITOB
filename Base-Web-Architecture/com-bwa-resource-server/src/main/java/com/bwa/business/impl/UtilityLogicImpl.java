@@ -3,7 +3,9 @@ package com.bwa.business.impl;
 
 import com.bwa.business.IUtilityLogic;
 import com.bwa.persistence.model.ErrorCode;
+import com.bwa.persistence.model.OrgUnit;
 import com.bwa.persistence.repository.ErrorCodeRepository;
+import com.bwa.persistence.repository.OrgUnitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,9 @@ public class UtilityLogicImpl implements IUtilityLogic {
 
     @Autowired
     ErrorCodeRepository errorCodeRepository;
+
+    @Autowired
+    OrgUnitRepository orgUnitRepository;
 
     @Override
     public String fetchExceptionMsg(int code, Object[] params) throws EntityNotFoundException{
@@ -34,5 +39,17 @@ public class UtilityLogicImpl implements IUtilityLogic {
            throw new EntityNotFoundException("Error Code not found: " + code);
         }
 
+    }
+
+    @Override
+    public OrgUnit fetchOrgUnit(String idOrgUnit) {
+
+        Optional<OrgUnit> orgUnitOpt = orgUnitRepository.findOne(idOrgUnit);
+
+        if(orgUnitOpt.isPresent()){
+            return orgUnitRepository.findOne(idOrgUnit).get();
+        }else{
+            throw new EntityNotFoundException("Error Organization not found for id : " + idOrgUnit);
+        }
     }
 }

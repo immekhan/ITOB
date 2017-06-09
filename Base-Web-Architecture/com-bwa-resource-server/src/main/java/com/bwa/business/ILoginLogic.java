@@ -1,5 +1,7 @@
 package com.bwa.business;
 
+import com.bwa.persistence.model.Customer;
+
 public interface ILoginLogic {
 
     /**
@@ -7,7 +9,7 @@ public interface ILoginLogic {
      * @param credentials
      * @return true on successful verification
      */
-    boolean login(String userName,String credentials);
+    Customer login(String userName, String credentials);
 
     /**
      * @param customerTypeId

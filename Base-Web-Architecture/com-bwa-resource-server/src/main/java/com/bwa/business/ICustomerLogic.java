@@ -2,6 +2,7 @@ package com.bwa.business;
 
 
 import com.bwa.persistence.model.Customer;
+import com.bwa.persistence.model.Role;
 
 import java.util.Date;
 
@@ -41,4 +42,5 @@ public interface ICustomerLogic {
     Customer fetchCustomerByMobileNo(String mobile, String idOrgUnit);
 
     Customer fetchCustomerByEmailId(String emailId, String idOrgUnit);
+
 }

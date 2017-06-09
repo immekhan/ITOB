@@ -24,18 +24,18 @@ public class LoginLogicImpl implements ILoginLogic{
     ICustomerLogic customerLogic;
 
     @Override
-    public boolean login(String userName, String credentials) {
+    public Customer login(String userName, String credentials) {
 
         Customer customer = customerRepository.findByUserId(userName,"01");
 
         if(customer!=null) {
             Credential credential = credentialRepository.findByCustomerIdAndCredentialType(customer.getId(), 1);
 
-            if(credential!=null){
-                return credential.getCredential().equals(credentials);
+            if(credential!=null && credential.getCredential().equals(credentials)){
+                return customer;
             }
         }
-        return false;
+        return null;
     }
 
     @Override //todo needs to return code for success
