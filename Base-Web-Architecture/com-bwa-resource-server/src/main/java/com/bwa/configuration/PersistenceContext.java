@@ -40,9 +40,9 @@ class PersistenceContext {
     DataSource dataSource() {
         BasicDataSource dataSource =new BasicDataSource();
         dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:orcl");
         dataSource.setUsername("itob");
-        dataSource.setPassword("system");
+        dataSource.setPassword("itob");
         return dataSource;
     }
 

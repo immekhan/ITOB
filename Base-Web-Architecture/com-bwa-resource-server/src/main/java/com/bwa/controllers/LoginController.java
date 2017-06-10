@@ -211,11 +211,11 @@ public class LoginController {
 
                                                 MenuResponse.MenuBean.SubMenuBean.SubMenuItemBean subMenuItemBean = subMenuBean.new SubMenuItemBean();
                                                 subMenuItemBean.setIdSubMenuItem(subMenuItem.getId());
-                                                subMenuItemBean.setIdSubMenu(subMenu.getId());
-                                                subMenuItemBean.setTitle(subMenu.getTitle());
-                                                subMenuItemBean.setPrivilege(subMenu.getPrivilege());
-                                                subMenuItemBean.setMenuOrder(subMenu.getSubMenuOrder());
-                                                subMenuItemBean.setFileWithPath(subMenu.getFileWithPath());
+                                                subMenuItemBean.setIdSubMenu(subMenuItem.getSubMenu());
+                                                subMenuItemBean.setTitle(subMenuItem.getTitle());
+                                                subMenuItemBean.setPrivilege(subMenuItem.getPrivilege());
+                                                subMenuItemBean.setMenuOrder(subMenuItem.getItemOrder());
+                                                subMenuItemBean.setFileWithPath(subMenuItem.getFileWithPath());
 
                                                 subMenuItems.add(subMenuItemBean);
                                             }
