@@ -75,4 +75,10 @@ public class CustomerLogicImpl implements ICustomerLogic {
         //fetch the user by email id and orgUnit
         return customerRepository.findByEmailId(emailId,idOrgUnit);
     }
+
+    @Override
+    public Customer fetchCustomerById(Long customerId, String idOrgUnit) {
+
+        return customerRepository.findById(customerId,idOrgUnit);
+    }
 }

@@ -1,6 +1,9 @@
 package com.bwa.business;
 
 import com.bwa.persistence.model.Customer;
+import com.bwa.persistence.model.Menu;
+
+import java.util.List;
 
 public interface ILoginLogic {
 
@@ -26,4 +29,5 @@ public interface ILoginLogic {
             , String userName, String mobileNo
             , String firstName, String lastName
             , String emailId, String password);
+
 }

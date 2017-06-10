@@ -2,25 +2,25 @@ package com.bwa.business.impl;
 
 
 import com.bwa.business.IUtilityLogic;
-import com.bwa.persistence.model.ErrorCode;
-import com.bwa.persistence.model.OrgUnit;
-import com.bwa.persistence.repository.ErrorCodeRepository;
-import com.bwa.persistence.repository.OrgUnitRepository;
+import com.bwa.persistence.model.*;
+import com.bwa.persistence.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class UtilityLogicImpl implements IUtilityLogic {
 
-    @Autowired
-    ErrorCodeRepository errorCodeRepository;
-
-    @Autowired
-    OrgUnitRepository orgUnitRepository;
+    @Autowired ErrorCodeRepository errorCodeRepository;
+    @Autowired OrgUnitRepository orgUnitRepository;
+    @Autowired MenuRepository menuRepository;
+    @Autowired RolePrivilegeRepository rolePrivilegeRepository;
+    @Autowired SubMenuRepository subMenuRepository;
+    @Autowired SubMenuItemRepository subMenuItemRepository;
 
     @Override
     public String fetchExceptionMsg(int code, Object[] params) throws EntityNotFoundException{
@@ -51,5 +51,25 @@ public class UtilityLogicImpl implements IUtilityLogic {
         }else{
             throw new EntityNotFoundException("Error Organization not found for id : " + idOrgUnit);
         }
+    }
+
+    @Override
+    public List<String> fetchPrivilegesByRole(String idRole) {
+        return rolePrivilegeRepository.findPrivilegeByRole(idRole);
+    }
+
+    @Override
+    public List<Menu> fetchMenusByRole(List<String> privilegesList){
+        return menuRepository.findByPrivilege(privilegesList);
+    }
+
+    @Override
+    public List<SubMenu> fetchSubMenusByPrivileges(List<String> privilegesList) {
+        return subMenuRepository.findByPrivilege(privilegesList);
+    }
+
+    @Override
+    public List<SubMenuItem> fetchSubMenusItemByPrivileges(List<String> privilegesList) {
+        return subMenuItemRepository.findByPrivilege(privilegesList);
     }
 }

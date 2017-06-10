@@ -9,9 +9,12 @@ import javax.persistence.*;
 @AttributeOverride(name="id", column=@Column(name="ID_SUB_MENU", length=80))
 public class SubMenu extends IdEntry<String> {
 
-    @ManyToOne(fetch=FetchType.LAZY, optional=false)
+    /*@ManyToOne(fetch=FetchType.LAZY, optional=false)
     @JoinColumn(name="ID_MENU", nullable=false)
-    private Menu menu;
+    private Menu menu;*/
+    @Basic(optional = false)
+    @Column(name="ID_MENU", nullable = false)
+    private String menu;
 
     @Basic(optional = false)
     @Column(name="STR_SUB_MENU_TITLE", nullable = false)
@@ -57,11 +60,11 @@ public class SubMenu extends IdEntry<String> {
         return subMenuOrder != null;
     }
 
-    public Menu getMenu() {
+    public String getMenu() {
         return menu;
     }
 
-    public void setMenu(Menu menu) {
+    public void setMenu(String menu) {
         this.menu = menu;
     }
 

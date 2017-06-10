@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     //todo Aspect is working fine but it is not printing logs on logging file
-    private static final Logger LOG = LoggerFactory
+    /*private static final Logger LOG = LoggerFactory
             .getLogger(LoggingAspect.class);
 
     @Pointcut("execution(* com.bwa.controllers.*.*(..))")
@@ -27,5 +27,5 @@ public class LoggingAspect {
 //        System.out.println("Entering method : "+joinPoint.getSignature().getName());
 //        System.out.println("joinPoint.getSignature().getClass(): "+joinPoint.getSignature().getClass());
         LOG.info("Entering method : "+joinPoint.getSignature().getName());
-    }
+    }*/
 }

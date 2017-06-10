@@ -43,4 +43,6 @@ public interface ICustomerLogic {
 
     Customer fetchCustomerByEmailId(String emailId, String idOrgUnit);
 
+    Customer fetchCustomerById(Long customerId, String idOrgUnit);
+
 }

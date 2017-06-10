@@ -1,13 +1,17 @@
 package com.bwa.controllers;
 
 import com.bwa.business.ILoginLogic;
+import com.bwa.business.IUtilityLogic;
 import com.bwa.controllers.response.LoginResponse;
+import com.bwa.controllers.response.MenuResponse;
 import com.bwa.controllers.response.SignUpResponse;
 import com.bwa.controllers.response.Status;
 import com.bwa.exceptions.CustomException;
-import com.bwa.exceptions.LoginException;
-import com.bwa.exceptions.SignUpException;
 import com.bwa.persistence.model.Customer;
+import com.bwa.persistence.model.Menu;
+import com.bwa.persistence.model.SubMenu;
+import com.bwa.persistence.model.SubMenuItem;
+import com.bwa.persistence.repository.MenuRepository;
 import com.bwa.util.AppUtils;
 import com.bwa.util.CodeConstants;
 import com.bwa.util.Constant;
@@ -18,7 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class LoginController {
@@ -31,6 +36,9 @@ public class LoginController {
 
     @Autowired
     private LoginControllerValidation loginControllerValidation;
+
+    @Autowired
+    private IUtilityLogic utilityLogic;
 
     @CrossOrigin
     @RequestMapping(value = "/signUp", method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
@@ -108,6 +116,126 @@ public class LoginController {
                 }else{
                     status.setCode(Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED));
                 }
+                response.setStatus(status);
+            }
+
+        } catch (CustomException e) {
+
+            LOG.info("Error : "+e.getMessage());
+
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED),e.getMessage()));
+        } catch (Exception e){
+            LOG.info("Error : "+e.getMessage());
+
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
+        }
+
+        return AppUtils.convertToJson(response);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/getNavMenu" , method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
+    @ResponseBody
+    public String fetchNavMenu( @RequestParam("idRole") String idRole,
+                              @RequestParam(value = "customerId" ) Long customerId,
+                              @RequestParam("idOrgUnit") String idOrgUnit) {
+
+        MenuResponse response=new MenuResponse();
+        String validationResponse =null;
+        try {
+            validationResponse=loginControllerValidation.validateFetchNavMenuRequest(idRole,customerId,idOrgUnit);
+
+            if(validationResponse.equals(CodeConstants.CODE_SUCCESS)) {
+
+                List<String> privilegeList =null;
+                List<Menu> navMenus=null;
+                List<SubMenu> navSubMenus=null;
+                List<SubMenuItem> navSubMenusItem=null;
+
+                privilegeList=utilityLogic.fetchPrivilegesByRole(idRole);
+
+                if(privilegeList!=null){
+
+                    navMenus=utilityLogic.fetchMenusByRole(privilegeList);
+
+                    if(navMenus!=null){
+                        navSubMenus=utilityLogic.fetchSubMenusByPrivileges(privilegeList);
+
+                        if(navSubMenus!=null){
+                            navSubMenusItem=utilityLogic.fetchSubMenusItemByPrivileges(privilegeList);
+
+                        }
+                    }
+
+                }
+
+                List<MenuResponse.MenuBean> menuBeans=new ArrayList<MenuResponse.MenuBean>();
+
+                if(navMenus!=null) {
+
+                    for (Menu menu : navMenus) {
+
+                        MenuResponse.MenuBean menuBean = response.new MenuBean();
+                        menuBean.setIdMenu(menu.getId());
+                        menuBean.setTitle(menu.getTitle());
+                        menuBean.setPrivilege(menu.getPrivilege());
+                        menuBean.setMenuOrder(menu.getMenuOrder().intValue());
+                        menuBean.setFileWithPath(menu.getFileWithPath());
+                        menuBean.setIsPage(menu.isPage());
+//                                menuBean.setMenu(menu);
+
+
+                        List<MenuResponse.MenuBean.SubMenuBean> subMenuBeans = new ArrayList<MenuResponse.MenuBean.SubMenuBean>();
+                        if(navSubMenus!=null) {
+                            for (SubMenu subMenu : navSubMenus) {
+
+                                if (subMenu.getMenu().equals(menu.getId())) {
+                                    MenuResponse.MenuBean.SubMenuBean subMenuBean = menuBean.new SubMenuBean();
+                                    subMenuBean.setIdSubMenu(subMenu.getId());
+                                    subMenuBean.setIdMenu(subMenu.getMenu());
+                                    subMenuBean.setTitle(subMenu.getTitle());
+                                    subMenuBean.setPrivilege(subMenu.getPrivilege());
+                                    subMenuBean.setMenuOrder(subMenu.getSubMenuOrder());
+                                    subMenuBean.setFileWithPath(subMenu.getFileWithPath());
+                                    subMenuBean.setIsMenu(subMenu.isMenu());
+
+//                                        subMenuBean.setSubMenu(subMenu);
+
+                                    List<MenuResponse.MenuBean.SubMenuBean.SubMenuItemBean> subMenuItems = new ArrayList<MenuResponse.MenuBean.SubMenuBean.SubMenuItemBean>();
+                                    if(navSubMenusItem!=null) {
+                                        for (SubMenuItem subMenuItem : navSubMenusItem) {
+
+                                            if (subMenuItem.getSubMenu().equals(subMenu.getId())) {
+
+                                                MenuResponse.MenuBean.SubMenuBean.SubMenuItemBean subMenuItemBean = subMenuBean.new SubMenuItemBean();
+                                                subMenuItemBean.setIdSubMenuItem(subMenuItem.getId());
+                                                subMenuItemBean.setIdSubMenu(subMenu.getId());
+                                                subMenuItemBean.setTitle(subMenu.getTitle());
+                                                subMenuItemBean.setPrivilege(subMenu.getPrivilege());
+                                                subMenuItemBean.setMenuOrder(subMenu.getSubMenuOrder());
+                                                subMenuItemBean.setFileWithPath(subMenu.getFileWithPath());
+
+                                                subMenuItems.add(subMenuItemBean);
+                                            }
+                                        }
+                                    }
+                                    subMenuBean.setSubMenuItems(subMenuItems);
+
+                                    subMenuBeans.add(subMenuBean);
+                                }
+                                menuBean.setSubMenus(subMenuBeans);
+                            }
+                        }
+                        menuBeans.add(menuBean);
+                    }
+                }
+                response.setMenuBean(menuBeans);
+
+                Status status=new Status();
+                status.setCode(CodeConstants.CODE_SUCCESS);
+                status.setMsg(CodeConstants.CODE_SUCCESS_MSG);
                 response.setStatus(status);
             }
 
