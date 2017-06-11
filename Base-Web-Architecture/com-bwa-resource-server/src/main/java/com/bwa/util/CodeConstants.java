@@ -37,6 +37,9 @@ public interface CodeConstants {
     int ERROR_CODE_ROLE_ID_REQUIRED =27;//Role id is invalid
     int ERROR_CODE_CUSTOMER_ID_REQUIRED =28;//Customer id is required
     int ERROR_CODE_CUSTOMER_INVALID =29;//Customer id is invalid
+    int ERROR_CODE_CUSTOMER_INACTIVE =30;//Customer is inactive
+    int ERROR_CODE_CUSTOMER_ROLE_INVALID =31;//Role not associated with customer
+    int ERROR_CODE_FETCHING_NAV_MENU_FAILED=32;//Failed to fetch navigation menus
 
 
 

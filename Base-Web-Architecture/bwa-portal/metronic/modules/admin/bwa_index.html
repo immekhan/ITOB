@@ -581,33 +581,6 @@ License: You must have a valid license purchased only from themeforest(the above
 					</ul>
 				</li>
 
-
-				<div ng-app="myApp" ng-controller="myCtrl">
-
-
-
-
-					<li>
-						<a href="javascript:;">
-							<i class="fa fa-shopping-cart"></i>
-							<span class="title">MyCommerce</span>
-							<span class="arrow "></span>
-						</a>
-
-						<ul class="sub-menu">
-							<li  ng-repeat="x in names">
-								<a ng-href="{{x}}">
-									<!--i class="fa fa-bullhorn"></i-->
-									{{x}}</a>
-							</li>
-						</ul>
-					</li>
-
-
-
-				</div>
-
-
 				<li>
 					<a href="javascript:;">
 						<i class="fa fa-cogs"></i>
@@ -3499,24 +3472,6 @@ License: You must have a valid license purchased only from themeforest(the above
 	});
 </script>
 
-<script>
-	var app = angular.module('myApp', []);
-
-
-
-	app.controller('myCtrl', function($scope, $http) {
-		$http.get("http://192.168.16.187:8080/base/getMenu")
-				.then(function mySucces(response) {
-					$scope.names = response.data;
-				}, function myError(response) {
-					$scope.myWelcome = 'Error';
-				});
-
-		console.log($scope.names);
-		console.log($scope.myWelcome);
-	});
-
-</script>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

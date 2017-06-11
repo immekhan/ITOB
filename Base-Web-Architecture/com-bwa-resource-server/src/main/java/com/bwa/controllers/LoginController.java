@@ -52,6 +52,8 @@ public class LoginController {
                          @RequestParam("rpassword") String rTpassword,
                          @RequestParam("idOrgUnit") String idOrgUnit) {
 
+        LOG.info("Entered in singUp");
+
         SignUpResponse response=new SignUpResponse();
         String validationResponse="";
         try {
@@ -87,6 +89,7 @@ public class LoginController {
                     Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
         }
 
+        LOG.info("Exiting from singUp");
         return AppUtils.convertToJson(response);
     }
 
@@ -97,6 +100,7 @@ public class LoginController {
                          @RequestParam("password") String password,
                          @RequestParam("idOrgUnit") String idOrgUnit) {
 
+        LOG.info("Entered in login");
         LoginResponse response=new LoginResponse();
         String validationResponse =null;
         try {
@@ -132,6 +136,7 @@ public class LoginController {
                     Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
         }
 
+        LOG.info("Exiting From login");
         return AppUtils.convertToJson(response);
     }
 
@@ -142,6 +147,7 @@ public class LoginController {
                               @RequestParam(value = "customerId" ) Long customerId,
                               @RequestParam("idOrgUnit") String idOrgUnit) {
 
+        LOG.info("Entered in fetchNavMenu");
         MenuResponse response=new MenuResponse();
         String validationResponse =null;
         try {
@@ -252,6 +258,7 @@ public class LoginController {
                     Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
         }
 
+        LOG.info("Exiting from getNavMenu");
         return AppUtils.convertToJson(response);
     }
 

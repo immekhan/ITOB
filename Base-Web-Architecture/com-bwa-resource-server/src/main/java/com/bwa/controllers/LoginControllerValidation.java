@@ -5,7 +5,9 @@ import com.bwa.business.ICustomerLogic;
 import com.bwa.business.IUtilityLogic;
 import com.bwa.exceptions.CustomException;
 import com.bwa.exceptions.LoginException;
+import com.bwa.exceptions.NavigationMenuException;
 import com.bwa.exceptions.SignUpException;
+import com.bwa.persistence.model.Customer;
 import com.bwa.util.CodeConstants;
 import com.bwa.util.Constant;
 import com.bwa.util.ControllerConstants;
@@ -19,20 +21,23 @@ class LoginControllerValidation {
 
     private static final Logger LOG = LoggerFactory
             .getLogger(LoginControllerValidation.class);
-    @Autowired
-    private ICustomerLogic customerLogic;
 
-    @Autowired
-    private IUtilityLogic utilityLogic;
-
-    @Autowired
-    private UtilityValidation utilityValidation;
+    @Autowired private ICustomerLogic customerLogic;
+    @Autowired private IUtilityLogic utilityLogic;
+    @Autowired private UtilityValidation utilityValidation;
 
     public String validateSignUpRequest( String firstName, String lastName,
                                          String emailId, String mobileNo,
                                          String userName, String password,
                                          String rTpassword , String idOrgUnit) throws CustomException {
 
+        LOG.info("Entered in validateSignUpRequest");
+        LOG.info("firstName : "+firstName);
+        LOG.info("lastName : "+lastName);
+        LOG.info("emailId : "+emailId);
+        LOG.info("mobileNo : "+mobileNo);
+        LOG.info("userName : "+userName);
+        LOG.info("idOrgUnit : "+idOrgUnit);
 
         if (firstName==null || firstName.isEmpty()) {
             throw new SignUpException(utilityLogic
@@ -118,6 +123,8 @@ class LoginControllerValidation {
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_MOBILE_NO_ALREADY_EXIST,new Object[]{mobileNo}));
         }
 
+        LOG.info("Exiting from validateSignUpRequest");
+
         return CodeConstants.CODE_SUCCESS;
     }
 
@@ -136,6 +143,10 @@ class LoginControllerValidation {
     }
 
     private void validateUserNameAndPassword( String userName, String password,String idOrgUnit) throws CustomException{
+
+        LOG.info("Entered in validateUserNameAndPassword");
+        LOG.info("userName : "+userName);
+        LOG.info("idOrgUnit : "+idOrgUnit);
 
         utilityValidation.validateOrgUnitId(idOrgUnit);
 
@@ -163,19 +174,34 @@ class LoginControllerValidation {
             throw new CustomException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_PASSWORD_INVALID_LENGTH,new Object[]{}));
         }
+
+        LOG.info("Exiting from validateUserNameAndPassword");
     }
 
     public String validateFetchNavMenuRequest( String idRole, Long customerId,String idOrgUnit) throws CustomException{
 
+        LOG.info("Entered in validateFetchNavMenuRequest");
+        LOG.info("idRole : "+idRole);
+        LOG.info("customerId : "+customerId);
+        LOG.info("idOrgUnit : "+idOrgUnit);
+
         utilityValidation.validateOrgUnitId(idOrgUnit);
 
         if(idRole ==null || idRole.isEmpty()){
-            throw new SignUpException(utilityLogic
+            throw new NavigationMenuException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_ROLE_ID_REQUIRED,new Object[]{}));
         }
 
-        utilityValidation.validateCustomer(customerId,idOrgUnit);
-//todo validate customer type id to request role id
+        Customer customer=utilityValidation.validateCustomer(customerId,idOrgUnit);
+
+        /*todo this cod cause exception due to lazy fetch
+        Error : could not initialize proxy - no Session
+        if(!customer.getCustomerType().getStrRole().equals(idRole)){
+            throw new NavigationMenuException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_CUSTOMER_ROLE_INVALID,new Object[]{}));
+        }
+*/
+        LOG.info("Exiting from validateFetchNavMenuRequest");
         return  CodeConstants.CODE_SUCCESS;
     }
 

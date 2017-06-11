@@ -3,6 +3,7 @@ package com.bwa.controllers;
 import com.bwa.business.ICustomerLogic;
 import com.bwa.business.IUtilityLogic;
 import com.bwa.exceptions.SignUpException;
+import com.bwa.persistence.model.Customer;
 import com.bwa.util.CodeConstants;
 import com.bwa.util.ControllerConstants;
 import org.hibernate.cache.CacheException;
@@ -17,10 +18,8 @@ public class UtilityValidation {
     private static final Logger LOG = LoggerFactory
             .getLogger(UtilityValidation.class);
 
-    @Autowired
-    private IUtilityLogic utilityLogic;
-    @Autowired
-    private ICustomerLogic customerLogic;
+    @Autowired private IUtilityLogic utilityLogic;
+    @Autowired private ICustomerLogic customerLogic;
 
     public boolean isValidOrgUnitId(String idOrgUnit){
         return utilityLogic.fetchOrgUnit(idOrgUnit) !=null;
@@ -29,6 +28,7 @@ public class UtilityValidation {
 
     public void validateOrgUnitId(String idOrgUnit) throws CacheException{
 
+        LOG.info("");
         if (idOrgUnit==null || idOrgUnit.isEmpty()) {
             throw new CacheException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_ORGANIZATION_ID_REQUIRED,new Object[]{}));
@@ -45,16 +45,23 @@ public class UtilityValidation {
         }
     }
 
-    public void validateCustomer(Long customerId,String idOrgUnit) throws CacheException{
+    public Customer validateCustomer(Long customerId, String idOrgUnit) throws CacheException{
 
         if(customerId==null){
             throw new CacheException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_CUSTOMER_ID_REQUIRED,new Object[]{}));
         }
 
-        if(customerLogic.fetchCustomerById(customerId,idOrgUnit)==null){
+        Customer customer=customerLogic.fetchCustomerById(customerId,idOrgUnit);
+        if(customer==null){
             throw new CacheException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_CUSTOMER_INVALID,new Object[]{}));
         }
+
+        if(!customer.isActive()){
+            throw new CacheException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_CUSTOMER_INACTIVE,new Object[]{}));
+        }
+        return customer;
     }
 }
