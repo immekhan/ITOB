@@ -194,13 +194,10 @@ class LoginControllerValidation {
 
         Customer customer=utilityValidation.validateCustomer(customerId,idOrgUnit);
 
-        /*todo this cod cause exception due to lazy fetch
-        Error : could not initialize proxy - no Session
         if(!customer.getCustomerType().getStrRole().equals(idRole)){
             throw new NavigationMenuException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_CUSTOMER_ROLE_INVALID,new Object[]{}));
         }
-*/
         LOG.info("Exiting from validateFetchNavMenuRequest");
         return  CodeConstants.CODE_SUCCESS;
     }
