@@ -7,7 +7,8 @@ public class WebConfigurationInitializer extends AbstractAnnotationConfigDispatc
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{PersistenceContext.class,QuartzJobSchedulerConf.class};
+//        return new Class[]{PersistenceContext.class,QuartzJobSchedulerConf.class};
+        return new Class[]{PersistenceContext.class};
     }
 
     @Override

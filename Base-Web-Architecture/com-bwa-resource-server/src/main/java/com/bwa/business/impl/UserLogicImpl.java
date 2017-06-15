@@ -22,17 +22,9 @@ public class UserLogicImpl implements IUserLogic {
      */
     private static final Logger LOG = Logger.getLogger(UserLogicImpl.class);
 
-    /**
-     * User Repository.
-     */
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RolePrivilegeRepository rolePrivilegeRepository;
-
-    @Autowired
-    private ICustomerLogic customerLogic;
+    @Autowired private UserRepository userRepository;
+    @Autowired private RolePrivilegeRepository rolePrivilegeRepository;
+    @Autowired private ICustomerLogic customerLogic;
 
     @Transactional
     @Override

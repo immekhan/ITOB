@@ -7,6 +7,7 @@ import com.bwa.persistence.repository.CredentialRepository;
 import com.bwa.persistence.repository.CustomerRepository;
 import com.bwa.persistence.repository.CustomerTypeRepository;
 import com.bwa.persistence.repository.OrgUnitRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +16,12 @@ import java.util.Date;
 @Component
 public class CustomerLogicImpl implements ICustomerLogic {
 
-    @Autowired
-    CustomerRepository customerRepository;
-    @Autowired
-    OrgUnitRepository orgUnitRepository;
-    @Autowired
-    CustomerTypeRepository customerTypeRepository;
-    @Autowired
-    CredentialRepository credentialRepository;
+    private static final Logger LOG = Logger.getLogger(CustomerLogicImpl.class);
+
+    @Autowired private CustomerRepository customerRepository;
+    @Autowired private OrgUnitRepository orgUnitRepository;
+    @Autowired private CustomerTypeRepository customerTypeRepository;
+    @Autowired private CredentialRepository credentialRepository;
 
     @Override
     public Customer saveCustomer(Long customerTypeId,String orgUnitId,String userName,

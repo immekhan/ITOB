@@ -9,8 +9,9 @@ import org.springframework.scheduling.quartz.*;
 import java.util.HashMap;
 import java.util.Map;
 
-@Configuration
-@ComponentScan("com.bwa.jobs")
+//todo uncomment these to run this configuration and also uncomment the entry in WebConfigurationInitializer
+//@Configuration
+//@ComponentScan("com.bwa.jobs")
 public class QuartzJobSchedulerConf {
     //http://www.concretepage.com/spring-4/spring-4-quartz-2-scheduler-integration-annotation-example-using-javaconfig
     //todo make common function for simple jobs to set attributes

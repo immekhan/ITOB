@@ -31,9 +31,9 @@ public class SessionPolicy
     @Column(name="BOL_RECYCLE_WHEN_LIMIT_HIT", nullable=false)
     private Character dbRecycleWhenLimitHit = Character.valueOf('Y');
 
-    public int getSessionTimeoutSeconds()
+    public long getSessionTimeoutSeconds()
     {
-        return this.sessionTimeoutSeconds.intValue();
+        return this.sessionTimeoutSeconds.longValue();
     }
 
     public boolean isSetSessionTimeoutSeconds()

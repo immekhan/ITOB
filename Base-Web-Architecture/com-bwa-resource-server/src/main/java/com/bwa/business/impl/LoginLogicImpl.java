@@ -9,6 +9,7 @@ import com.bwa.persistence.repository.CredentialRepository;
 import com.bwa.persistence.repository.CustomerRepository;
 import com.bwa.persistence.repository.MenuRepository;
 import com.bwa.persistence.repository.RolePrivilegeRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +19,13 @@ import java.util.List;
 @Component
 public class LoginLogicImpl implements ILoginLogic{
 
-    @Autowired CustomerRepository customerRepository;
-    @Autowired CredentialRepository credentialRepository;
-    @Autowired MenuRepository menuRepository;
-    @Autowired RolePrivilegeRepository rolePrivilegeRepository;
+    private static final Logger LOG = Logger.getLogger(LoginLogicImpl.class);
 
-    @Autowired ICustomerLogic customerLogic;
+    @Autowired private CustomerRepository customerRepository;
+    @Autowired private CredentialRepository credentialRepository;
+    @Autowired private MenuRepository menuRepository;
+    @Autowired private RolePrivilegeRepository rolePrivilegeRepository;
+    @Autowired private ICustomerLogic customerLogic;
 
     @Override
     public Customer login(String userName, String credentials) {
