@@ -8,8 +8,8 @@ indexApp.controller('indexController', function($scope,$http) {
         url: 'http://localhost:8080/base/getNavMenu',
         headers: {'Content-Type': 'application/json'},
         params: {
-            'idRole': 'ROLE_TEST',
-            'customerId': 9,
+            'idRole': 'ROLE_TEST_CUSTOMER',
+            'customerId': 8,
             'idOrgUnit': '01'
         }
     }).then(function mySuccess(response) {

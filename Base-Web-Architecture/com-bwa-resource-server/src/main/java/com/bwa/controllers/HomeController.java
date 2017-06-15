@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by Hassnain on 08/02/2017.
  */
@@ -40,7 +42,7 @@ public class HomeController {
 
     @RequestMapping(value = "/getUserCount", method = { RequestMethod.GET }, produces = Constant.APPLICATION_PLAIN_TXT)
     @ResponseBody
-    public String getDepartCount() {
+    public String getDepartCount(HttpServletRequest request) {
         String response = null;
         try {
             logger.info("Called getUserCount");
