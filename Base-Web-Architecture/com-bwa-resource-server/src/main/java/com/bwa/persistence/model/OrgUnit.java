@@ -3,6 +3,7 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.IdEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -32,13 +33,13 @@ public class OrgUnit
     @Column(name="INT_AUTO_CANCEL_AFTER_MINUTES", nullable=true)
     private Integer autoCancelAfterMinutes;
 
-    @Deprecated
-    protected OrgUnit() {}
+    public OrgUnit(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
 
-    @Deprecated
-    public OrgUnit(String id)
-    {
-        super(id);
+    public OrgUnit(){
+        this.setCreationDate(new Date());
     }
 
     public Locale getLocale()

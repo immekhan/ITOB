@@ -3,6 +3,7 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.IdEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="ITOB_MENUS")
@@ -28,6 +29,15 @@ public class Menu extends IdEntry<String> {
     @Basic(optional = false)
     @Column(name = "INT_MENU_ORDER", nullable = false)
     private Integer menuOrder;
+
+    public Menu(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Menu(){
+        this.setCreationDate(new Date());
+    }
 
     public boolean isSetPrivilege() {
         return privilege != null;

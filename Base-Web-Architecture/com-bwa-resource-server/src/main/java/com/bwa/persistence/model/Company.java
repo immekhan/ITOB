@@ -4,6 +4,7 @@ import com.bwa.persistence.model.common.GeneratedIdEntry;
 import com.bwa.persistence.model.common.UpdatableDbEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Hello Hassnain on 07/05/2017.
@@ -18,6 +19,15 @@ public class Company extends GeneratedIdEntry {
     @Basic(optional = false)
     @Column(name = "STR_COMPANY_NAME", length = 30)
     private String companyName;
+
+    public Company(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Company(){
+        this.setCreationDate(new Date());
+    }
 
     public String getCompanyName() {
         return companyName;

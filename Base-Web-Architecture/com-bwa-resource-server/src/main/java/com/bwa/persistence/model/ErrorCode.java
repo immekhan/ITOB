@@ -4,6 +4,7 @@ import com.bwa.persistence.model.common.IdEntry;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name="ITOB_ERROR_CODES")
@@ -20,6 +21,15 @@ public class ErrorCode  extends IdEntry<Long>
     @Basic(optional=false)
     @Column(name="STR_INFORMATION", nullable=false,length = 200)
     private String info;
+
+    public ErrorCode(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public ErrorCode(){
+        this.setCreationDate(new Date());
+    }
 
     public boolean isSetLevel() {
         return level != null;

@@ -3,6 +3,7 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.IdEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="ITOB_SUB_MENUS")
@@ -35,6 +36,15 @@ public class SubMenu extends IdEntry<String> {
     @Basic(optional = false)
     @Column(name = "INT_MENU_ORDER", nullable = false)
     private Integer subMenuOrder;
+
+    public SubMenu(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public SubMenu(){
+        this.setCreationDate(new Date());
+    }
 
     public boolean isSetMenu() {
         return menu != null;

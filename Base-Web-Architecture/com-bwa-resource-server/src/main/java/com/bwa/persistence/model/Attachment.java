@@ -5,6 +5,7 @@ import com.bwa.persistence.model.common.GeneratedIdEntry;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Date;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -47,6 +48,15 @@ public class Attachment
     @Basic(optional=false)
     @Column(name="ID_ATTACHMENT_STATUS", nullable=false)
     private Integer status = Integer.valueOf(0);
+
+    public Attachment(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Attachment(){
+        this.setCreationDate(new Date());
+    }
 
     public int getStatus()
     {

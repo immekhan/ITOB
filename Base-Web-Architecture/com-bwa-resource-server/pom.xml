@@ -109,13 +109,13 @@
         </dependency>
 
         <!--Logging-->
-        <!--<dependency>
+        <dependency>
           <groupId>org.slf4j</groupId>
           <artifactId>slf4j-api</artifactId>
           <version>${org.self4j-version}</version>
-        </dependency>-->
+        </dependency>
 
-        <!--<dependency>
+        <dependency>
           <groupId>org.slf4j</groupId>
           <artifactId>jcl-over-slf4j</artifactId>
           <version>${org.self4j-version}</version>
@@ -126,7 +126,7 @@
               <artifactId>slf4j-api</artifactId>
             </exclusion>
           </exclusions>
-        </dependency>-->
+        </dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>

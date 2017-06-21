@@ -4,6 +4,7 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.GeneratedIdEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="ITOB_SESSION_POLICIES")
@@ -30,6 +31,15 @@ public class SessionPolicy
     @Basic(optional=false)
     @Column(name="BOL_RECYCLE_WHEN_LIMIT_HIT", nullable=false)
     private Character dbRecycleWhenLimitHit = Character.valueOf('Y');
+
+    public SessionPolicy(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public SessionPolicy(){
+        this.setCreationDate(new Date());
+    }
 
     public long getSessionTimeoutSeconds()
     {

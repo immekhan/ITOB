@@ -1,32 +1,32 @@
 package com.bwa.controllers;
 
 import com.bwa.business.handler.ISessionHandlerLogic;
-import com.bwa.persistence.model.OrgUnit;
+import com.bwa.exceptions.SessionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class SessionHandler {
 
     @Autowired private ISessionHandlerLogic sessionHandlerLogic;
 
-    protected boolean validatePersistedSession(HttpSession httpSession){
+    protected boolean validatePersistedSession(HttpServletRequest request){
 
 
         return false;
     }
 
-    protected void persistSession(HttpSession httpSession){
+    protected void persistSession(HttpServletRequest request, Long customerId, String orgUnitId) throws SessionException{
+        sessionHandlerLogic.persistSession(request,customerId,orgUnitId);
+    }
+
+    protected void updatePersistedSession(HttpServletRequest request){
 
     }
 
-    protected void updatePersistedSession(HttpSession httpSession){
-
-    }
-
-    protected void deletePersistedSession(HttpSession httpSession){
+    protected void deletePersistedSession(HttpServletRequest request){
 
     }
 

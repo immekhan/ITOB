@@ -83,6 +83,15 @@ public class Customer
     @Column(name = "EMAIL" , nullable = true)
     private String email;
 
+    public Customer(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Customer(){
+        this.setCreationDate(new Date());
+    }
+
     public boolean isActive()
     {
         return this.dbActive.equals(Character.valueOf('Y'));

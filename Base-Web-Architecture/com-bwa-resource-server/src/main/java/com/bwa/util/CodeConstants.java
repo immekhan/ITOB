@@ -41,7 +41,8 @@ public interface CodeConstants {
     int ERROR_CODE_CUSTOMER_ROLE_INVALID =31;//Role not associated with customer
     int ERROR_CODE_FETCHING_NAV_MENU_FAILED=32;//Failed to fetch navigation menus
 
-
+    //Session related exceptions
+    int ERROR_CODE_MAX_ALLOWANCE_SESSION_REACHED = 33;//Please logout from at least one device to login this device or wait for automatic logout
 
 
 }

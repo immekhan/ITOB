@@ -1,14 +1,20 @@
 package com.bwa.persistence.model;
 
-import com.bwa.persistence.model.common.IdEntry;
+import com.bwa.persistence.model.common.UpdatableDbEntry;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name="ITOB_SESSIONS")
-@AttributeOverride(name="id", column=@Column(name="STR_SESSION_ID", length=80))
-public class Session extends IdEntry<String> {
+public class Session extends UpdatableDbEntry
+        implements Serializable {
+
+    @Id
+    @Basic(optional = false)
+    @Column(name = "STR_SESSION_ID" , nullable = false ,length = 80)
+    private String id;
 
     @Basic(optional = false)
     @Column(name = "ID_CUSTOMER" , nullable = false)
@@ -36,6 +42,15 @@ public class Session extends IdEntry<String> {
     @Column(name="DAT_LAST_ACTIVITY", nullable=true)
     @Temporal(TemporalType.DATE)
     private Date datLastActivity;
+
+    public Session(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Session(){
+        this.setCreationDate(new Date());
+    }
 
     public boolean isSetCustomerId() {
         return customerId != null;
@@ -107,5 +122,18 @@ public class Session extends IdEntry<String> {
 
     public void setDatLastActivity(Date datLastActivity) {
         this.datLastActivity = datLastActivity;
+    }
+
+    public boolean isSetId() {
+        return id != null;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Session setId(String id) {
+        this.id = id;
+        return this;
     }
 }

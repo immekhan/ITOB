@@ -9,7 +9,7 @@ import com.bwa.exceptions.NavigationMenuException;
 import com.bwa.exceptions.SignUpException;
 import com.bwa.persistence.model.Customer;
 import com.bwa.util.CodeConstants;
-import com.bwa.util.Constant;
+import com.bwa.util.Constants;
 import com.bwa.util.ControllerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ class LoginControllerValidation {
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_FIRST_NAME_INVALID,new Object[]{firstName}));
         }
 
-        if (firstName.length() < Constant.FIRST_LAST_NAME_LENGTH_MIN || firstName.length() > Constant.FIRST_LAST_NAME_LENGTH_MAX) {
+        if (firstName.length() < Constants.FIRST_LAST_NAME_LENGTH_MIN || firstName.length() > Constants.FIRST_LAST_NAME_LENGTH_MAX) {
             throw new SignUpException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_FIRST_NAME_INVALID_LENGTH,new Object[]{}));
 
@@ -67,7 +67,7 @@ class LoginControllerValidation {
 
         }
 
-        if (lastName.length() < Constant.FIRST_LAST_NAME_LENGTH_MIN || lastName.length() > Constant.FIRST_LAST_NAME_LENGTH_MAX) {
+        if (lastName.length() < Constants.FIRST_LAST_NAME_LENGTH_MIN || lastName.length() > Constants.FIRST_LAST_NAME_LENGTH_MAX) {
             throw new SignUpException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_LAST_NAME_INVALID_LENGTH,new Object[]{}));
 
@@ -83,7 +83,7 @@ class LoginControllerValidation {
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_EMAIL_ID_INVALID,new Object[]{emailId}));
         }
 
-        if (emailId.length() < Constant.EMAIL_ID_LENGTH_MIN || emailId.length() > Constant.EMAIL_ID_LENGTH_MAX) {
+        if (emailId.length() < Constants.EMAIL_ID_LENGTH_MIN || emailId.length() > Constants.EMAIL_ID_LENGTH_MAX) {
             throw new SignUpException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_EMAIL_ID_INVALID_LENGTH,new Object[]{}));
 
@@ -155,7 +155,7 @@ class LoginControllerValidation {
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_REQUIRED,new Object[]{}));
         }
 
-        if (userName.length() < Constant.USER_NAME_LENGTH_MIN || userName.length() > Constant.PASSWORD_LENGTH_MAX) {
+        if (userName.length() < Constants.USER_NAME_LENGTH_MIN || userName.length() > Constants.PASSWORD_LENGTH_MAX) {
             throw new CustomException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_INVALID_LENGTH,new Object[]{}));
         }
@@ -170,7 +170,7 @@ class LoginControllerValidation {
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_PASSWORD_REQUIRED,new Object[]{}));
         }
 
-        if (password.length() < Constant.PASSWORD_LENGTH_MIN || password.length() > Constant.PASSWORD_LENGTH_MAX) {
+        if (password.length() < Constants.PASSWORD_LENGTH_MIN || password.length() > Constants.PASSWORD_LENGTH_MAX) {
             throw new CustomException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_PASSWORD_INVALID_LENGTH,new Object[]{}));
         }

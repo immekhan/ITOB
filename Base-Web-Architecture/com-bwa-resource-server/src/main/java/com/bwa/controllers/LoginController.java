@@ -11,10 +11,9 @@ import com.bwa.persistence.model.Customer;
 import com.bwa.persistence.model.Menu;
 import com.bwa.persistence.model.SubMenu;
 import com.bwa.persistence.model.SubMenuItem;
-import com.bwa.persistence.repository.MenuRepository;
 import com.bwa.util.AppUtils;
 import com.bwa.util.CodeConstants;
-import com.bwa.util.Constant;
+import com.bwa.util.Constants;
 import com.bwa.util.ControllerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class LoginController {
     private IUtilityLogic utilityLogic;
 
     @CrossOrigin
-    @RequestMapping(value = "/signUp", method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
+    @RequestMapping(value = "/signUp", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
     @ResponseBody
     public String singUp(@RequestParam("firstName") String firstName,
                          @RequestParam("lastName") String lastName,
@@ -94,7 +93,7 @@ public class LoginController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/login", method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
+    @RequestMapping(value = "/login", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
     @ResponseBody
     public String login( @RequestParam("userName") String userName,
                          @RequestParam("password") String password,
@@ -141,7 +140,7 @@ public class LoginController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/getNavMenu" , method = { RequestMethod.POST}, produces = Constant.APPLICATION_JSON)
+    @RequestMapping(value = "/getNavMenu" , method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
     @ResponseBody
     public String fetchNavMenu( @RequestParam("idRole") String idRole,
                               @RequestParam(value = "customerId" ) Long customerId,
@@ -260,6 +259,14 @@ public class LoginController {
 
         LOG.info("Exiting from getNavMenu");
         return AppUtils.convertToJson(response);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/logout", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
+    @ResponseBody
+    public String logout(){
+
+        return "";
     }
 
 }

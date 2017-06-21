@@ -3,6 +3,7 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.UpdatableDbEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Hello Hassnain on 07/05/2017.
@@ -26,6 +27,15 @@ public class City extends UpdatableDbEntry {
     @Basic(optional = true)
     @Column(name = "ID_REGION_CODE" , length = 1)
     private Character regionCode;
+
+    public City(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public City(){
+        this.setCreationDate(new Date());
+    }
 
     public String getCityCode() {
         return cityCode;

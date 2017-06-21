@@ -6,6 +6,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name="ITOB_PRIVILEGES")
@@ -18,8 +19,14 @@ public class Privilege
     @Column(name="STR_PRIVILEGE", nullable=true, length=80)
     private String description;
 
-    @Deprecated
-    protected Privilege() {}
+    public Privilege(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Privilege(){
+        this.setCreationDate(new Date());
+    }
 
     @Deprecated
     public Privilege(String id)

@@ -33,7 +33,6 @@ import javax.sql.DataSource;
 })
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
-@EnableAspectJAutoProxy
 class PersistenceContext {
 
     @Bean(destroyMethod = "close")

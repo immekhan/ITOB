@@ -3,6 +3,7 @@ package com.bwa.persistence.model;
 import com.bwa.persistence.model.common.IdEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="MOB_ROLES")
@@ -15,8 +16,14 @@ public class Role
     @Column(name="STR_ROLE", nullable=true, length=80)
     private String description;
 
-    @Deprecated
-    protected Role() {}
+    public Role(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Role(){
+        this.setCreationDate(new Date());
+    }
 
     @Deprecated
     public Role(String id)

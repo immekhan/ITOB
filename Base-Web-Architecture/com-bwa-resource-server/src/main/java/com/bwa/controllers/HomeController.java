@@ -2,7 +2,7 @@ package com.bwa.controllers;
 
 import com.bwa.endpoint.IUserEndpoint;
 import com.bwa.util.AppUtils;
-import com.bwa.util.Constant;
+import com.bwa.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class HomeController {
             .getLogger(HomeController.class);
 
 
-    @RequestMapping(value = "/getUserCountJsonResponse", method = { RequestMethod.GET }, produces = Constant.APPLICATION_JSON)
+    @RequestMapping(value = "/getUserCountJsonResponse", method = { RequestMethod.GET }, produces = Constants.APPLICATION_JSON)
     @ResponseBody
     public String homePageJson() {
         String response = null;
@@ -40,7 +40,7 @@ public class HomeController {
         return response;
     }
 
-    @RequestMapping(value = "/getUserCount", method = { RequestMethod.GET }, produces = Constant.APPLICATION_PLAIN_TXT)
+    @RequestMapping(value = "/getUserCount", method = { RequestMethod.GET }, produces = Constants.APPLICATION_PLAIN_TXT)
     @ResponseBody
     public String getDepartCount(HttpServletRequest request) {
         String response = null;
@@ -55,7 +55,7 @@ public class HomeController {
         return response;
     }
 
-    @RequestMapping(value = "/deleteUserById/{id}", method = { RequestMethod.GET }, produces = Constant.APPLICATION_PLAIN_TXT)
+    @RequestMapping(value = "/deleteUserById/{id}", method = { RequestMethod.GET }, produces = Constants.APPLICATION_PLAIN_TXT)
     @ResponseBody
     public String deleteUserById(@PathVariable String id) {
         String response = null;
@@ -73,7 +73,7 @@ public class HomeController {
 
 
     @CrossOrigin
-    @RequestMapping(value = "/getMenu", method = { RequestMethod.GET }, produces = Constant.APPLICATION_JSON)
+    @RequestMapping(value = "/getMenu", method = { RequestMethod.GET }, produces = Constants.APPLICATION_JSON)
     @ResponseBody
     public Object getMenu() {
         String response = null;

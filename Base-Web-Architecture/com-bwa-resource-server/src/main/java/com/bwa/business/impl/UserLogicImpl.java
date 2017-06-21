@@ -2,11 +2,9 @@ package com.bwa.business.impl;
 
 import com.bwa.business.ICustomerLogic;
 import com.bwa.business.IUserLogic;
-import com.bwa.persistence.model.Customer;
 import com.bwa.persistence.model.UserMBean;
 import com.bwa.persistence.repository.RolePrivilegeRepository;
 import com.bwa.persistence.repository.UserRepository;
-import com.bwa.persistence.repository.custom.RolePrivilegeRepositoryCustom;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

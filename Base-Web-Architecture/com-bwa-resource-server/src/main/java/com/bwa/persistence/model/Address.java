@@ -106,6 +106,15 @@ public class Address
     @Column(name="ID_LOCATION_TYPE", nullable=true)
     private Integer locationType;
 
+    public Address(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Address(){
+        this.setCreationDate(new Date());
+    }
+
     public Customer getCustomer()
     {
         return this.customer;

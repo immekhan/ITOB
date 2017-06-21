@@ -56,6 +56,15 @@ public class Credential
     @Column(name="DAT_LAST_USED", nullable=true)
     private Date lastUsed;
 
+    public Credential(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public Credential(){
+        this.setCreationDate(new Date());
+    }
+
     public boolean isActive()
     {
         return this.dbActive.equals(Character.valueOf('Y'));

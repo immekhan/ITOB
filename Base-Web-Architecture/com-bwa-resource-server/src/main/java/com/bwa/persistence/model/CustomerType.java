@@ -5,6 +5,7 @@ import com.bwa.persistence.model.common.GeneratedIdEntry;
 import com.bwa.persistence.model.common.UpdatableDbEntry;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="ITOB_CUSTOMER_TYPES")
@@ -29,6 +30,15 @@ public class CustomerType
     @Basic(optional=false)
     @Column(name="BOL_IS_INTERNAL", nullable=false)
     private Character dbInternal = Character.valueOf('N');
+
+    public CustomerType(Long idCreator){
+        this.setCreationDate(new Date());
+        this.setCreator(idCreator);
+    }
+
+    public CustomerType(){
+        this.setCreationDate(new Date());
+    }
 
     public boolean isInternal()
     {
