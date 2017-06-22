@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,9 +96,10 @@ public class LoginController {
     @CrossOrigin
     @RequestMapping(value = "/login", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
     @ResponseBody
-    public String login( @RequestParam("userName") String userName,
-                         @RequestParam("password") String password,
-                         @RequestParam("idOrgUnit") String idOrgUnit) {
+    public String login(HttpServletRequest request,
+                        @RequestParam("userName") String userName,
+                        @RequestParam("password") String password,
+                        @RequestParam("idOrgUnit") String idOrgUnit) {
 
         LOG.info("Entered in login");
         LoginResponse response=new LoginResponse();
@@ -114,8 +116,13 @@ public class LoginController {
 
                     status.setCode(CodeConstants.CODE_SUCCESS);
                     status.setMsg(CodeConstants.CODE_SUCCESS_MSG);
-                    response.setRole(customer.getCustomerType().getStrRole());
-                    response.setCustomerId(customer.getId());
+                    response.setRole(customer.getCustomerType().getStrRole());//todo remove role from bean
+                    response.setCustomerId(customer.getId());//todo remove role from bean
+
+                    request.getSession().setAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID,customer.getId());
+                    request.getSession().setAttribute(Constants.SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID,idOrgUnit);
+                    request.getSession().setAttribute(Constants.SESSION_ATTRIBUTE_KEY_ROLE_ID,customer.getCustomerType().getStrRole());
+
                 }else{
                     status.setCode(Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED));
                 }

@@ -1,12 +1,13 @@
 package com.bwa.aspects;
 
+import com.bwa.business.IUserLogic;
+import com.bwa.business.handler.ISessionHandlerLogic;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 public class SessionAspect {
 
     private static final Logger LOG = Logger.getLogger(SessionAspect.class);
+
+    @Autowired private ISessionHandlerLogic sessionHandlerLogic;
+    @Autowired private IUserLogic userLogic;
 
     @Pointcut("execution(* com.bwa.controllers.*.*(..))")
     private void pointCutControllerBeforeAfterExecution(){}
@@ -31,10 +35,14 @@ public class SessionAspect {
     @Pointcut("execution(* com.bwa.controllers.*.*(javax.servlet.http.HttpServletRequest,..))")
     private void pointCutForSessionValidation(){}
 
-    @Pointcut("execution(* com.bwa.controllers.SessionHandler.*(..))")
-    private void pointCutHandlerExecution(){}
+    @Pointcut("execution(* com.bwa.controllers.HomeController.getDepartCount(..))")
+    private void pointCutForThrowException(){}
 
-    @Before("pointCutControllerBeforeAfterExecution() && pointCutForSessionValidation() && !pointCutLogin() && !pointCutSignUp() && !pointCutHandlerExecution()")
+//    @Pointcut("execution(* com.bwa.controllers.SessionHandler.*(..))")
+//    private void pointCutHandlerExecution(){}
+
+//    @Before("pointCutControllerBeforeAfterExecution() && pointCutForSessionValidation() && !pointCutLogin() && !pointCutSignUp() && !pointCutHandlerExecution()")
+    @Before("pointCutControllerBeforeAfterExecution() && pointCutForSessionValidation() && !pointCutLogin() && !pointCutSignUp()")
     public void validateSession(JoinPoint joinPoint) {
         //todo add logic for session validation and updation
         // get args
@@ -66,6 +74,24 @@ public class SessionAspect {
         //todo invalidate persisted session after successful logout
         printMethodSignature("After Exiting Method",(MethodSignature) joinPoint.getSignature());
         LOG.info("Method returned value is : " + result);
+
+        //httpSession.invalidate();
+    }
+
+    @Around("pointCutForThrowException()")
+    public Object justThrowException(ProceedingJoinPoint proceedingJoinPoint){
+        //todo this POC is done for session handling
+        LOG.info("Before invoking getName() method");
+        Object value = null;
+        try {
+//            userLogic.throwException();
+            value = proceedingJoinPoint.proceed();
+        } catch (Throwable e) {
+            LOG.info("ERROR : "+e);
+        }
+        LOG.info("After invoking getName() method. Return value="+value);
+        return value;
+        //httpSession.invalidate();
     }
 
     private void printMethodSignature(String arg , MethodSignature methodSign){

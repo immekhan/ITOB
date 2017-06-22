@@ -25,4 +25,5 @@ public interface IUserLogic {
     boolean deleteUserById(Long id);
 
 //    int getDeptCount();
+    void throwException();
 }

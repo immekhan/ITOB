@@ -3,8 +3,7 @@ package com.bwa.controllers;
 import com.bwa.endpoint.IUserEndpoint;
 import com.bwa.util.AppUtils;
 import com.bwa.util.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +20,7 @@ public class HomeController {
     @Autowired
     private IUserEndpoint userEndpoint;
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(HomeController.class);
+    private static final Logger LOG = Logger.getLogger(HomeController.class);
 
 
     @RequestMapping(value = "/getUserCountJsonResponse", method = { RequestMethod.GET }, produces = Constants.APPLICATION_JSON)
@@ -30,12 +28,12 @@ public class HomeController {
     public String homePageJson() {
         String response = null;
         try {
-            logger.info("Called getTotalUserCount");
+            LOG.info("Called getTotalUserCount");
             Long totalDepartments = userEndpoint.getTotalUserCount();
             response = AppUtils.convertToJson(totalDepartments);
-            logger.info(response);
+            LOG.info(response);
         } catch (Exception e) {
-            logger.error("Exception Occured:" + e);
+            LOG.error("Exception Occured:" + e);
         }
         return response;
     }
@@ -45,12 +43,12 @@ public class HomeController {
     public String getDepartCount(HttpServletRequest request) {
         String response = null;
         try {
-            logger.info("Called getUserCount");
+            LOG.info("Called getUserCount");
             Long totalDepartments = userEndpoint.getTotalUserCount();
             response = Long.toString(totalDepartments);
-            logger.info(response);
+            LOG.info(response);
         } catch (Exception e) {
-            logger.error("Exception Occured:" + e);
+            LOG.error("Exception Occured:" + e);
         }
         return response;
     }
@@ -60,13 +58,13 @@ public class HomeController {
     public String deleteUserById(@PathVariable String id) {
         String response = null;
         try {
-            logger.info("Called getUserCount");
+            LOG.info("Called getUserCount");
             boolean isUserDeleted= userEndpoint.deleteUserById(Long.parseLong(id));
 
             response = isUserDeleted?"User is deleted successfully":"Unable to delete user";
-            logger.info(response);
+            LOG.info(response);
         } catch (Exception e) {
-            logger.error("Exception Occured:" + e);
+            LOG.error("Exception Occured:" + e);
         }
         return response;
     }
@@ -79,12 +77,12 @@ public class HomeController {
         String response = null;
         String [] menuArray={"ABC.html","ABC1.html"};
         try {
-            logger.info("Called getMene");
+            LOG.info("Called getMene");
 //            Long totalDepartments = userEndpoint.getTotalUserCount();
             response = AppUtils.convertToJson(menuArray);
-            logger.info(response);
+            LOG.info(response);
         } catch (Exception e) {
-            logger.error("Exception Occured:" + e);
+            LOG.error("Exception Occured:" + e);
         }
         return response;
     }
