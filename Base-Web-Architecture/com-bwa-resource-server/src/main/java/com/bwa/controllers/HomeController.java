@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by Hassnain on 08/02/2017.
- */
-
 @Controller
 public class HomeController {
 

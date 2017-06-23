@@ -43,6 +43,8 @@ public interface CodeConstants {
 
     //Session related exceptions
     int ERROR_CODE_MAX_ALLOWANCE_SESSION_REACHED = 33;//Please logout from at least one device to login this device or wait for automatic logout
+    int ERROR_CODE_SESSION_EXPIRED = 34;//Session timeout
+    int ERROR_CODE_REQUIRED_LOGIN = 35;//Please Login
 
 
 }

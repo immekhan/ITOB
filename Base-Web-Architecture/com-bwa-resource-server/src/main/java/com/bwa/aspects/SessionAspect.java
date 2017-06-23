@@ -1,15 +1,22 @@
 package com.bwa.aspects;
 
-import com.bwa.business.IUserLogic;
 import com.bwa.business.handler.ISessionHandlerLogic;
+import com.bwa.controllers.response.ResponseObject;
+import com.bwa.exceptions.CustomException;
+import com.bwa.util.AppUtils;
+import com.bwa.util.CodeConstants;
+import com.bwa.util.ControllerUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +28,6 @@ public class SessionAspect {
     private static final Logger LOG = Logger.getLogger(SessionAspect.class);
 
     @Autowired private ISessionHandlerLogic sessionHandlerLogic;
-    @Autowired private IUserLogic userLogic;
 
     @Pointcut("execution(* com.bwa.controllers.*.*(..))")
     private void pointCutControllerBeforeAfterExecution(){}
@@ -38,63 +44,108 @@ public class SessionAspect {
     @Pointcut("execution(* com.bwa.controllers.HomeController.getDepartCount(..))")
     private void pointCutForThrowException(){}
 
-//    @Pointcut("execution(* com.bwa.controllers.SessionHandler.*(..))")
-//    private void pointCutHandlerExecution(){}
+    @Pointcut("execution(* com.bwa.controllers.LoginController.logout(..))")
+    public void pointCutLogout(){}
 
-//    @Before("pointCutControllerBeforeAfterExecution() && pointCutForSessionValidation() && !pointCutLogin() && !pointCutSignUp() && !pointCutHandlerExecution()")
-    @Before("pointCutControllerBeforeAfterExecution() && pointCutForSessionValidation() && !pointCutLogin() && !pointCutSignUp()")
-    public void validateSession(JoinPoint joinPoint) {
-        //todo add logic for session validation and updation
-        // get args
-        Object[] args = joinPoint.getArgs();
-        if (args[0] instanceof HttpServletRequest) {
+    @Around("pointCutControllerBeforeAfterExecution() && pointCutForSessionValidation() && !pointCutLogin() && !pointCutSignUp() && !pointCutLogout()")
+    public String validateSessionBeforeCallingRestApi(ProceedingJoinPoint proceedingJoinPoint){
 
-            // downcast and print Account specific stuff
-            HttpServletRequest request = (HttpServletRequest) args[0];
-            //todo add the remaining logic here -->calling session handler for validation etc
-        }
-    }
-
-    @AfterReturning(
-            pointcut = "execution(* com.bwa.controllers.LoginController.login(..))",
-            returning= "result")
-    public void logAfterReturningFromLogin(JoinPoint joinPoint, Object result) {
-
-        //todo persist session after successful login
-        printMethodSignature("After Exiting Method",(MethodSignature) joinPoint.getSignature());
-        LOG.info("Method returned value is : " + result);
-        //todo add logic to check the successful login and persist session
-    }
-
-    @AfterReturning(
-            pointcut = "execution(* com.bwa.controllers.LoginController.logout(..))",
-            returning= "result")
-    public void logAfterReturningFromLogout(JoinPoint joinPoint, Object result) {
-
-        //todo invalidate persisted session after successful logout
-        printMethodSignature("After Exiting Method",(MethodSignature) joinPoint.getSignature());
-        LOG.info("Method returned value is : " + result);
-
-        //httpSession.invalidate();
-    }
-
-    @Around("pointCutForThrowException()")
-    public Object justThrowException(ProceedingJoinPoint proceedingJoinPoint){
-        //todo this POC is done for session handling
-        LOG.info("Before invoking getName() method");
-        Object value = null;
+        ResponseObject response =new ResponseObject();
+        String jsonResponse="";
         try {
-//            userLogic.throwException();
-            value = proceedingJoinPoint.proceed();
-        } catch (Throwable e) {
+            //fetch parameters
+            Object[] args = proceedingJoinPoint.getArgs();
+            if (args[0] instanceof HttpServletRequest) {
+
+                HttpServletRequest request = (HttpServletRequest) args[0];
+                //validate session
+                sessionHandlerLogic.validatePersisted(request.getSession());
+                //proceed with method exicution
+                jsonResponse =(String) proceedingJoinPoint.proceed();
+            }
+
+        } catch (CustomException e) {
+
             LOG.info("ERROR : "+e);
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED),e.getMessage()));
+            jsonResponse = AppUtils.convertToJson(response);
+
+        } catch (Throwable e){
+
+            LOG.info("ERROR : "+e);
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
+            jsonResponse = AppUtils.convertToJson(response);
+
         }
-        LOG.info("After invoking getName() method. Return value="+value);
-        return value;
-        //httpSession.invalidate();
+        return jsonResponse;
     }
 
-    private void printMethodSignature(String arg , MethodSignature methodSign){
-        LOG.info(arg+" : " + methodSign);
+    @Around("pointCutLogin()")
+    public String persistSessionAfterSuccessLogin(ProceedingJoinPoint proceedingJoinPoint){
+
+        ResponseObject response =new ResponseObject();
+        String jsonResponse="";
+
+        try {
+            //fetch parameters
+            Object[] args = proceedingJoinPoint.getArgs();
+            if (args[0] instanceof HttpServletRequest) {
+
+                HttpServletRequest request = (HttpServletRequest) args[0];
+                //proceed with login
+                jsonResponse =(String) proceedingJoinPoint.proceed();
+
+                ObjectMapper mapper = new ObjectMapper();
+                response=(ResponseObject) mapper.readValue(jsonResponse,ResponseObject.class);
+
+                if(response.getStatus().getCode().equals(CodeConstants.CODE_SUCCESS)){
+                    sessionHandlerLogic.persistSession(request.getSession());
+                }
+            }
+
+        } catch (CustomException e) {
+
+            LOG.info("ERROR : "+e);
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED),e.getMessage()));
+            jsonResponse = AppUtils.convertToJson(response);
+
+        } catch (Throwable e){
+
+            LOG.info("ERROR : "+e);
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
+            jsonResponse = AppUtils.convertToJson(response);
+
+        }
+        return jsonResponse;
+    }
+
+    @Around("pointCutLogout()")
+    public String invalidatePersistedSessionAfterSuccessLogout(ProceedingJoinPoint proceedingJoinPoint){
+
+        ResponseObject response =new ResponseObject();
+        String jsonResponse="";
+        try {
+            //fetch parameters
+            Object[] args = proceedingJoinPoint.getArgs();
+            if (args[0] instanceof HttpServletRequest) {
+
+                HttpServletRequest request = (HttpServletRequest) args[0];
+                jsonResponse = validateSessionBeforeCallingRestApi(proceedingJoinPoint);
+                sessionHandlerLogic.invalidatePersistedSession(request.getSession());
+
+            }
+        }catch (Throwable e){
+
+            LOG.info("ERROR : "+e);
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
+            jsonResponse = AppUtils.convertToJson(response);
+
+        }
+        return jsonResponse;
     }
 }

@@ -1,6 +1,5 @@
 package com.bwa.controllers;
 
-
 import com.bwa.business.ICustomerLogic;
 import com.bwa.business.IUtilityLogic;
 import com.bwa.exceptions.CustomException;
@@ -11,16 +10,14 @@ import com.bwa.persistence.model.Customer;
 import com.bwa.util.CodeConstants;
 import com.bwa.util.Constants;
 import com.bwa.util.ControllerConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 class LoginControllerValidation {
 
-    private static final Logger LOG = LoggerFactory
-            .getLogger(LoginControllerValidation.class);
+    private static final Logger LOG = Logger.getLogger(LoginControllerValidation.class);
 
     @Autowired private ICustomerLogic customerLogic;
     @Autowired private IUtilityLogic utilityLogic;

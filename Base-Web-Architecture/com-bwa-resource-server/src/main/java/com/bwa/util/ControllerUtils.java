@@ -1,6 +1,6 @@
 package com.bwa.util;
 
-import com.bwa.controllers.response.Status;
+import com.bwa.controllers.response.bean.Status;
 
 public class ControllerUtils {
 

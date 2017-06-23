@@ -28,9 +28,6 @@ public class UserLogicImpl implements IUserLogic {
     @Override
     public final long getTotalUserCount() {
 
-        if(1>0)
-        throw new ClassCastException();
-
         UserMBean userMBean = new UserMBean();
         userMBean.setAddressId("00001");
         userMBean.setPhoneNo("090078601");
@@ -59,10 +56,6 @@ public class UserLogicImpl implements IUserLogic {
 
     public List<String> privilegeList(){
         return rolePrivilegeRepository.findPrivilegeByRole("ROLE_TEST");
-    }
-
-    public void throwException(){
-        throw new NullPointerException();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.bwa.controllers.response;
+package com.bwa.controllers.response.bean;
 
 public class Status {
 

@@ -13,8 +13,9 @@ import com.bwa.util.Constants;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,41 +30,64 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
     @Autowired private CustomerRepository customerRepository;
     @Autowired private IUtilityLogic utilityLogic;
 
+    @Transactional
     @Override
-    public void validatePersisted(HttpSession httpSession) {
+    public void validatePersisted(HttpSession httpSession) throws SessionException {
 
         Optional<Session> sessionOpt=sessionRepository.findOne(httpSession.getId());
 
         Long customerId=(Long)httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID);
         String idOrgUnit=(String) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID);
         Date dat_last_activity=(Date) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_DAT_LAST_ACTIVITY);
+
         Date dat_current_date=new Date();
 
         if(sessionOpt.isPresent()){
-            //fetch orgUnit id from httpSession
+
             Session session=sessionOpt.get();
             if(session.getDatLogOff()!=null){
+                LOG.info("*****Expiring Session*****");
                 httpSession.invalidate();
-                //throw exception and force logout
+                throw new SessionException(utilityLogic
+                        .fetchExceptionMsg(CodeConstants.ERROR_CODE_SESSION_EXPIRED,new Object[]{}));
             }
 
             if(session.getCustomerId().longValue()!=customerId){
-                //todo throw exception for invalid session
-            }
-            long lastAccessedTimeInMilliSeconds=(dat_current_date.getTime() - dat_last_activity.getTime());
-            Customer customer = customerRepository.findById(session.getCustomerId(),idOrgUnit);
-
-            long sessionPolicyMaxTimeAllowedInMilliSecond=customer.getCustomerType().getSessionPolicy().getSessionTimeoutSeconds()*1000;
-            if (lastAccessedTimeInMilliSeconds > sessionPolicyMaxTimeAllowedInMilliSecond){
-                LOG.info("Invalidate Session");
+                LOG.info("*****Expiring Session*****");
                 invalidatePersistedSession(httpSession);
+                throw new SessionException(utilityLogic
+                        .fetchExceptionMsg(CodeConstants.ERROR_CODE_SESSION_EXPIRED,new Object[]{}));
             }
+
+            long lastAccessedTimeInMilliSeconds=(dat_current_date.getTime() - dat_last_activity.getTime());
+
+            //fetch customer to fetch the session policy
+            Customer customer = customerRepository.findById(session.getCustomerId(),idOrgUnit);
+            //fetch the policy
+            long sessionPolicyMaxTimeAllowedInMilliSecond=customer.getCustomerType().getSessionPolicy()
+                    .getSessionTimeoutSeconds()*1000;
+
+            if (lastAccessedTimeInMilliSeconds > sessionPolicyMaxTimeAllowedInMilliSecond){
+
+                LOG.info("*****Expiring Session*****");
+                invalidatePersistedSession(httpSession);
+
+                throw new SessionException(utilityLogic
+                        .fetchExceptionMsg(CodeConstants.ERROR_CODE_SESSION_EXPIRED,new Object[]{}));
+            }
+
+            LOG.info("*****Updating Session*****");
+            updatePersistedSession(httpSession);
 
         }else{
-            //todo throw invalid session
+            LOG.info("*****Error*****");
+            LOG.info("Session ID Invalid : "+httpSession.getId().toString());
+            throw new SessionException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_REQUIRED_LOGIN,new Object[]{}));
         }
     }
 
+    @Transactional
     @Override
     public void persistSession(HttpSession httpSession) throws SessionException{
 
@@ -74,6 +98,7 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
         //validate max session allowed
         if(sessionRepository.findActiveSessionsByCustomerId(customerId).size()
                 >=customer.getCustomerType().getSessionPolicy().getMaxSessionsAllowed()){
+            LOG.info("****Cannot login due to logged In to max no of devices****");
             throw new SessionException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_MAX_ALLOWANCE_SESSION_REACHED,new Object[]{}));
         }
@@ -91,15 +116,17 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
 
         //create session object
         Session session=new Session(customerId);
+        session.setCustomerId(customerId);
         session.setId(httpSession.getId());
         session.setUserId(customer.getUserId());
         session.setDatLogon(dat_session_created);
         session.setDatLastActivity(dat_session_created);
 
         sessionRepository.save(session);
-        LOG.info("Session successfully persisted..");
+        LOG.info("****Session successfully persisted****");
     }
 
+    @Transactional
     @Override
     public void invalidatePersistedSession(HttpSession httpSession) {
         //mark session inactive delete by id
@@ -114,8 +141,11 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
             session.setDatLogOff(dat_session_logout);
             sessionRepository.save(session);
         }
+        httpSession.invalidate();
+        LOG.info("****Session invalidated successfully****");
     }
 
+    @Transactional
     @Override
     public void updatePersistedSession(HttpSession httpSession) {
         //update session last activity by session id

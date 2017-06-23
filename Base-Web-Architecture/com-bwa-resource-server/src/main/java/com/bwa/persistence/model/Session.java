@@ -30,17 +30,17 @@ public class Session extends UpdatableDbEntry
 
     @Basic(optional=false)
     @Column(name="DAT_LOGON", nullable=false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datLogon;
 
     @Basic(optional=true)
     @Column(name="DAT_LOGOFF", nullable=true)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datLogOff;
 
     @Basic(optional=true)
     @Column(name="DAT_LAST_ACTIVITY", nullable=true)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datLastActivity;
 
     public Session(Long idCreator){

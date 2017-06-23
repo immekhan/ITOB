@@ -1,14 +1,13 @@
-package com.bwa.controllers.response;
+package com.bwa.controllers.response.bean;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuResponse {
+public class Menu {
 
-    private Status status;
     private List<MenuBean> menuBean;
 
-    public MenuResponse(){
+    public Menu(){
 
     }
 
@@ -221,27 +220,15 @@ public class MenuResponse {
             this.subMenus = subMenus;
         }
     }
-    public MenuResponse(Status status) {
-        this.status = status;
-    }
 
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-
-    public List<MenuResponse.MenuBean> getMenuBean() {
+    public List<Menu.MenuBean> getMenuBean() {
         if(menuBean ==null){
-            new ArrayList<MenuResponse.MenuBean>();
+            new ArrayList<Menu.MenuBean>();
         }
         return menuBean;
     }
 
-    public void setMenuBean(List<MenuResponse.MenuBean> menuBean) {
+    public void setMenuBean(List<Menu.MenuBean> menuBean) {
         this.menuBean = menuBean;
     }
 }

@@ -2,21 +2,18 @@ package com.bwa.controllers;
 
 import com.bwa.business.ICustomerLogic;
 import com.bwa.business.IUtilityLogic;
-import com.bwa.exceptions.SignUpException;
 import com.bwa.persistence.model.Customer;
 import com.bwa.util.CodeConstants;
 import com.bwa.util.ControllerConstants;
+import org.apache.log4j.Logger;
 import org.hibernate.cache.CacheException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UtilityValidation {
 
-    private static final Logger LOG = LoggerFactory
-            .getLogger(UtilityValidation.class);
+    private static final Logger LOG = Logger.getLogger(UtilityValidation.class);
 
     @Autowired private IUtilityLogic utilityLogic;
     @Autowired private ICustomerLogic customerLogic;

@@ -6,10 +6,10 @@ package com.bwa.business;
 public interface IUserLogic {
 
     /**
-     * return UserResponse by calling Dao which uses spring transaction template
+     * return User by calling Dao which uses spring transaction template
      * @return
      *
-    UserResponse getData();*/
+    User getData();*/
 
     /**
      * returns total number of department by call the DepartmentRepository
@@ -24,6 +24,4 @@ public interface IUserLogic {
      */
     boolean deleteUserById(Long id);
 
-//    int getDeptCount();
-    void throwException();
 }
