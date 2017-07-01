@@ -13,7 +13,6 @@ import com.bwa.util.Constants;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
@@ -107,9 +106,6 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
         Date dat_session_created = new Date();
 
         //set session attributes and interval
-//        httpSession.setAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID,customerId);
-//        httpSession.setAttribute(Constants.SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID,orgUnitId);
-//        httpSession.setAttribute(Constants.SESSION_ATTRIBUTE_KEY_ROLE_ID,customer.getCustomerType().getStrRole());
         httpSession.setAttribute(Constants.SESSION_ATTRIBUTE_KEY_DAT_CREATED,dateFormat.format(dat_session_created));
         httpSession.setAttribute(Constants.SESSION_ATTRIBUTE_KEY_DAT_LAST_ACTIVITY,dateFormat.format(dat_session_created));
         httpSession.setMaxInactiveInterval(customer.getCustomerType().getSessionPolicy().getMaxSessionsAllowed());
@@ -163,4 +159,9 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
 
         }
     }
+
+    //todo fetch all the active sessions with logout date null
+    //todo mark these session logout according to session policy
+    //todo check why every time a new session is being created whenever request submitted from post man
+    //todo once logged in util session expire or user logout when every the use hits url login redirect to dash board
 }
