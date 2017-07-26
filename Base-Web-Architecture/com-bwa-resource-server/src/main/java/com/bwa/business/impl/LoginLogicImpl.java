@@ -41,7 +41,7 @@ public class LoginLogicImpl implements ILoginLogic{
                 return customer;
             }
         }
-        return null;
+        return customer;
     }
 
     @Override
