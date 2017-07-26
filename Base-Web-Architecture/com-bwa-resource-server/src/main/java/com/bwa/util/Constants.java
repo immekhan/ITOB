@@ -2,6 +2,8 @@ package com.bwa.util;
 
 public interface Constants {
 
+	String DEFAULT_ORGUNIT_ID ="01";
+
 	String APPLICATION_JSON = "application/json";
 	String APPLICATION_PLAIN_TXT = "text/plain";
 

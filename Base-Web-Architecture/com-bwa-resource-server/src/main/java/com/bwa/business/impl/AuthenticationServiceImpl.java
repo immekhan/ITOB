@@ -5,6 +5,7 @@ import com.bwa.persistence.repository.CredentialRepository;
 import com.bwa.persistence.repository.CustomerRepository;
 import com.bwa.persistence.repository.RolePrivilegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +25,7 @@ public class AuthenticationServiceImpl implements UserDetailsService
     private CredentialRepository credentialRepository;
     @Override
     public UserDetails loadUserByUsername(String userId)
-            throws UsernameNotFoundException {
+            throws UsernameNotFoundException, DataAccessException {
         Customer customer = customerRepository.findByUserId(userId,"01");
         if(customer == null){
             throw new UsernameNotFoundException("UserName "+userId+" not found");

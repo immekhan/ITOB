@@ -23,8 +23,9 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
             headers: {'Content-Type': 'application/json'},
             params :
                 {
-                    'userName':$scope.loginUserName,
-                    'password':$scope.loginPassword
+                    'username':$scope.loginUserName,
+                    'password':$scope.loginPassword,
+                    'orgUnitId':'01'
                 }
         }).then(function mySuccess(response) {
 
