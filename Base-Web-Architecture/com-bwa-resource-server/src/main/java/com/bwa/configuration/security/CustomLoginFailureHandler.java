@@ -1,5 +1,6 @@
 package com.bwa.configuration.security;
 
+import com.bwa.util.CodeConstants;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -23,7 +24,7 @@ public class CustomLoginFailureHandler extends SimpleUrlAuthenticationFailureHan
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
         try {
-            response.getWriter().write("Username/Password not recognized.");
+            response.getWriter().write(CodeConstants.ERROR_CODE_LOGIN_FAILED_MSG);
             response.getWriter().flush();
         } catch (IOException e) {
             LOG.info("Error : ",e);

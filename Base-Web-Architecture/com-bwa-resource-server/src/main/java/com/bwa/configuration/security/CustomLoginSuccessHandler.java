@@ -1,5 +1,6 @@
 package com.bwa.configuration.security;
 
+import com.bwa.util.CodeConstants;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.RedirectStrategy;
@@ -22,7 +23,7 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         try {
-            response.getWriter().write("00");
+            response.getWriter().write(CodeConstants.CODE_SUCCESS);
             response.getWriter().flush();
         } catch (IOException e) {
             LOG.info("Error : ",e);
