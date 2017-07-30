@@ -30,7 +30,7 @@ public interface CodeConstants {
     int ERROR_CODE_MOBILE_NO_ALREADY_EXIST=20;//Mobile No : ''{0 }''is already associated with other user
     int ERROR_CODE_SIGN_UP_FAILED=21;//SignUp failed
     int ERROR_CODE_USER_NAME_DOES_NOT_EXIST=22;//User Name or password incorrect
-    int ERROR_CODE_LOGIN_FAILED=23;//SignUp failed
+    int ERROR_CODE_LOGIN_FAILED=23;//Username/Password not recognized.
     int ERROR_CODE_PASSWORD_CONFIRM_PASSWORD_MISMATCH=24;//Password and confirm password miss match
     int ERROR_CODE_ORGANIZATION_ID_REQUIRED =25;//Organization code is required
     int ERROR_CODE_ORGANIZATION_ID_INVALID =26;//Organization id ''{0]'' is invalid

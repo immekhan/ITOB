@@ -31,14 +31,16 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
 
             $scope.loginResponse = response.data;
 
-            if($scope.loginResponse == 'Login Success'){
+            if($scope.loginResponse == '00'){
 
                 $scope.loginUserName='';
                 $scope.loginPassword='';
 
-                var url = "http://" + $window.location.host + "/base.web.architecture/bwa-portal/metronic/modules/admin/index.html";
+                var url = "http://" + $window.location.host + "/index.html";
                 // $log.log(url);
                 $window.location.href = url;
+            }else{
+                $scope.loginResponseError = response.data;
             }
         }, function myError(response) {
             $scope.loginResponseError = response.statusText;

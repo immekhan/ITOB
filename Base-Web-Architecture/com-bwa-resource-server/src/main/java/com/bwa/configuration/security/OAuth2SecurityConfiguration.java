@@ -1,33 +1,17 @@
 package com.bwa.configuration.security;
 
-import com.bwa.business.impl.AuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
-import org.springframework.security.oauth2.provider.approval.TokenStoreUserApprovalHandler;
-import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -93,16 +77,17 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 .accessDeniedPage("/Access_Denied").and()
 		 .addFilterBefore(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 		 */
-		http.httpBasic().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
-		http.addFilterBefore(customUsernamePasswordAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
-
-		http
+		http.addFilterBefore(customUsernamePasswordAuthenticationFilter()
+				,UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling().authenticationEntryPoint(urlAuthenticationEntryPoint());
+		/*http
 				.formLogin()
-				.loginPage("/login");
-		http.authorizeRequests().antMatchers("/login").permitAll()
+				.loginPage("/login")
+		.isCustomLoginPage();*/
+//		http.authorizeRequests().antMatchers("/login").permitAll();
 //				.antMatchers("/oauth/token/revokeById*").permitAll()
 //				.antMatchers("/tokens*").permitAll()
-				.anyRequest().authenticated()
+		http.authorizeRequests().anyRequest().authenticated()
 				.and().formLogin().permitAll()
 				.and().csrf().disable();
 //        http.addFilterBefore(customUsernamePasswordAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
@@ -111,7 +96,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public UsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
 			throws Exception {
-		CustomUsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
+		UsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
         /*authFilter
                 .setAuthenticationManager(authenticationManagerBean());
 */
@@ -119,9 +104,22 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
         authenticationProviderList.add(authenticationProvider());
         AuthenticationManager authenticationManager = new ProviderManager(authenticationProviderList);
         */
+		authFilter.setUsernameParameter("username");
+		authFilter.setPasswordParameter("password");
+        authFilter.setRequiresAuthenticationRequestMatcher(
+				new AntPathRequestMatcher("/login","POST"));
+		authFilter.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
+		authFilter.setAuthenticationFailureHandler(new CustomLoginFailureHandler());
 		authFilter.setAuthenticationManager(authenticationManager());
 
 		return authFilter;
+	}
+
+	@Bean
+	public LoginUrlAuthenticationEntryPoint urlAuthenticationEntryPoint(){
+		LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint =
+				new CustomLoginUrlAuthenticationEntryPoint("/login");
+		return loginUrlAuthenticationEntryPoint;
 	}
 
 	@Override

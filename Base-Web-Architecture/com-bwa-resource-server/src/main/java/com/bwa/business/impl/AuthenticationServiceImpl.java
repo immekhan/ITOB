@@ -24,9 +24,14 @@ public class AuthenticationServiceImpl implements UserDetailsService
     @Autowired
     private CredentialRepository credentialRepository;
     @Override
-    public UserDetails loadUserByUsername(String userId)
+    public UserDetails loadUserByUsername(String userData)
             throws UsernameNotFoundException, DataAccessException {
-        Customer customer = customerRepository.findByUserId(userId,"01");
+
+        String data[]=userData.split(":");
+        String userId=data[0].trim();
+        String orgUnitId=data[1].trim();
+
+        Customer customer = customerRepository.findByUserId(userId,orgUnitId);
         if(customer == null){
             throw new UsernameNotFoundException("UserName "+userId+" not found");
         }
