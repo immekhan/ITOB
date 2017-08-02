@@ -11,12 +11,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+//	@Autowired DataSource dataSource;
 	//	@Autowired private ClientDetailsService clientDetailsService;
 //	@Autowired private AuthenticationServiceImpl authenticationServiceImpl;
 
@@ -59,51 +64,26 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-       /* http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/home").access("hasRole('ROLE_USER')")
-                .antMatchers("/admin*//**").access("hasRole('ROLE_ADMIN')")
-		 .antMatchers("/api*//**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_API')")
-		 .and()
-		 .formLogin()
-		 .loginProcessingUrl("/login")
-		 .loginPage("/loginPage")
-		 .failureUrl("/loginPage?error")
-		 .defaultSuccessUrl("/home")
-		 .usernameParameter("username")
-		 .passwordParameter("password")
-		 .and()
-		 .exceptionHandling()
-		 .accessDeniedPage("/Access_Denied").and()
-		 .addFilterBefore(customUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-		 */
 		http.addFilterBefore(customUsernamePasswordAuthenticationFilter()
 				,UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().authenticationEntryPoint(urlAuthenticationEntryPoint());
 		/*http
 				.formLogin()
-				.loginPage("/login")
-		.isCustomLoginPage();*/
-//		http.authorizeRequests().antMatchers("/login").permitAll();
-//				.antMatchers("/oauth/token/revokeById*").permitAll()
-//				.antMatchers("/tokens*").permitAll()
-		http.authorizeRequests().anyRequest().authenticated()
+				.loginPage("/login").permitAll();*/
+//		.and().rememberMe().tokenRepository(persistentTokenRepository());
+
+		http.authorizeRequests().antMatchers("/hasLoggedIn").hasAuthority("PRV_PERSIST_SESSION")
+				.antMatchers("/fetchNavBar").hasAuthority("PRV_FETCH_NAV_MENU")
+				.anyRequest().authenticated()
 				.and().formLogin().permitAll()
 				.and().csrf().disable();
-//        http.addFilterBefore(customUsernamePasswordAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class);
 	}
 
 	@Bean
 	public UsernamePasswordAuthenticationFilter customUsernamePasswordAuthenticationFilter()
 			throws Exception {
 		UsernamePasswordAuthenticationFilter authFilter = new CustomUsernamePasswordAuthenticationFilter();
-        /*authFilter
-                .setAuthenticationManager(authenticationManagerBean());
-*/
-        /*List<AuthenticationProvider> authenticationProviderList = new ArrayList<AuthenticationProvider>();
-        authenticationProviderList.add(authenticationProvider());
-        AuthenticationManager authenticationManager = new ProviderManager(authenticationProviderList);
-        */
+
 		authFilter.setUsernameParameter("username");
 		authFilter.setPasswordParameter("password");
         authFilter.setRequiresAuthenticationRequestMatcher(
@@ -128,28 +108,11 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
-/*
-	@Bean
-	public TokenStore tokenStore() {
-		return new JdbcTokenStore(dataSource);
-	}
+	/*@Bean
+	public PersistentTokenRepository persistentTokenRepository(){
+		final JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+		jdbcTokenRepository.setDataSource(dataSource);
+		return jdbcTokenRepository;
 
-	@Bean
-	@Autowired
-	public TokenStoreUserApprovalHandler userApprovalHandler(TokenStore tokenStore){
-		TokenStoreUserApprovalHandler handler = new TokenStoreUserApprovalHandler();
-		handler.setTokenStore(tokenStore);
-		handler.setRequestFactory(new DefaultOAuth2RequestFactory(clientDetailsService));
-		handler.setClientDetailsService(clientDetailsService);
-		return handler;
-	}
-	
-	@Bean
-	@Autowired
-	public ApprovalStore approvalStore(TokenStore tokenStore) throws Exception {
-		TokenApprovalStore store = new TokenApprovalStore();
-		store.setTokenStore(tokenStore);
-		return store;
 	}*/
-
 }

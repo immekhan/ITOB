@@ -33,12 +33,33 @@ angular.module('loginApp', []).controller('loginController', function($scope, $h
 
             if($scope.loginResponse == '00'){
 
-                $scope.loginUserName='';
-                $scope.loginPassword='';
+                $http({
+                    method: 'POST',
+                    url: 'http://localhost:8080/base/hasLoggedIn',
+                    headers: {'Content-Type': 'application/json'},
+                    params: {
+                    }
+                }).then(function mySuccess(response) {
+                    $scope.hasLoggedInResponse = response.data;
 
-                var url = "http://" + $window.location.host + "/index.html";
-                // $log.log(url);
-                $window.location.href = url;
+                    if ($scope.hasLoggedInResponse.status.code == '00') {
+
+                        $scope.loginUserName='';
+                        $scope.loginPassword='';
+
+                        var url = "http://" + $window.location.host + "/portal/html/index.html";
+                        // $log.log(url);
+                        $window.location.href = url;
+
+                    } else {
+                        //todo logout etc on service not available
+                        $scope.loginResponseError = response.statusText;
+                    }
+                }, function myError(response) {
+                    $scope.loginResponseError = response.statusText;
+                });
+
+
             }else{
                 $scope.loginResponseError = response.data;
             }

@@ -6,7 +6,7 @@ public interface CodeConstants {
     String CODE_SUCCESS="00";
     String CODE_SUCCESS_MSG = "Success";
     int DEFAULT_EXCEPTION_CODE = 9999;
-    String DEFAULT_EXCEPTION_MSG = "Unknown error occurred!";
+    String DEFAULT_EXCEPTION_MSG = "Unknown error occurred! Please contact support";
 
     int ERROR_CODE_FIRST_NAME_REQUIRED=1;//Fist Name is required
     int ERROR_CODE_FIRST_NAME_INVALID=2;//''{0}''is invalid

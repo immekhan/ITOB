@@ -32,7 +32,7 @@ public class SessionAspect {
     @Pointcut("execution(* com.bwa.controllers.*.*(..))")
     private void pointCutControllerBeforeAfterExecution(){}
 
-    @Pointcut("execution(* com.bwa.controllers.LoginController.login(..))")
+    @Pointcut("execution(* com.bwa.controllers.LoginController.login(..)) ||  execution(* com.bwa.controllers.LoginController.hasLoggedIn(..))")
     public void pointCutLogin(){}
 
     @Pointcut("execution(* com.bwa.controllers.LoginController.singUp(..))")

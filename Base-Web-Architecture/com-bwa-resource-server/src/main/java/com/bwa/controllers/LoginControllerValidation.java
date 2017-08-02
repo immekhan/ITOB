@@ -125,23 +125,24 @@ class LoginControllerValidation {
         return CodeConstants.CODE_SUCCESS;
     }
 
+    public String validateLoginRequest( String userName, String idOrgUnit) throws CustomException{
+
+        //validate user name and password
+        validateUserNameAndPassword( userName,idOrgUnit);
+
+        return  CodeConstants.CODE_SUCCESS;
+    }
+
     public String validateLoginRequest( String userName, String password , String idOrgUnit) throws CustomException{
 
         //validate user name and password
         validateUserNameAndPassword( userName, password,idOrgUnit);
 
-        //db level validations
-        if (customerLogic.fetchCustomerByUserId(userName, idOrgUnit) == null) {
-            throw new LoginException(utilityLogic
-                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_DOES_NOT_EXIST,new Object[]{}));
-        }
-
         return  CodeConstants.CODE_SUCCESS;
     }
 
-    private void validateUserNameAndPassword( String userName, String password,String idOrgUnit) throws CustomException{
+    private void validateUserNameAndPassword( String userName,String idOrgUnit) throws CustomException {
 
-        LOG.info("Entered in validateUserNameAndPassword");
         LOG.info("userName : "+userName);
         LOG.info("idOrgUnit : "+idOrgUnit);
 
@@ -161,6 +162,20 @@ class LoginControllerValidation {
             throw new CustomException(utilityLogic
                     .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_INVALID,new Object[]{}));
         }
+
+        //db level validations
+        if (customerLogic.fetchCustomerByUserId(userName, idOrgUnit) == null) {
+            throw new LoginException(utilityLogic
+                    .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_DOES_NOT_EXIST,new Object[]{}));
+        }
+
+    }
+
+    private void validateUserNameAndPassword( String userName, String password,String idOrgUnit) throws CustomException{
+
+        LOG.info("Entered in validateUserNameAndPassword");
+
+        validateUserNameAndPassword(userName,idOrgUnit);
 
         if (password==null || password.isEmpty()) {
             throw new CustomException(utilityLogic

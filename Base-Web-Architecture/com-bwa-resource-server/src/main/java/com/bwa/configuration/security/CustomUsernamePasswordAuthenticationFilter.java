@@ -46,7 +46,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
                 password = "";
             }
 
-            if(orgUnitId == null) {
+            if(orgUnitId == null) {//todo update login for property file
                 orgUnitId = Constants.DEFAULT_ORGUNIT_ID;
             }
 

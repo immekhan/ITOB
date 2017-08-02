@@ -19,6 +19,7 @@ public interface Constants {
 	//Session related Constants
 	String SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID = "orgUnitId";
 	String SESSION_ATTRIBUTE_KEY_CUSTOMER_ID = "customerId";
+	String SESSION_ATTRIBUTE_KEY_USERNAME = "username";
 	String SESSION_ATTRIBUTE_KEY_ROLE_ID = "idRole";
 	String SESSION_ATTRIBUTE_KEY_DAT_CREATED = "datCreated";
 	String SESSION_ATTRIBUTE_KEY_DAT_LAST_ACTIVITY = "lastActivityDate";

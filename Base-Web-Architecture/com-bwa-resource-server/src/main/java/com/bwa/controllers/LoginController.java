@@ -1,11 +1,13 @@
 package com.bwa.controllers;
 
+import com.bwa.business.ICustomerLogic;
 import com.bwa.business.ILoginLogic;
 import com.bwa.business.IUtilityLogic;
 import com.bwa.controllers.response.ResponseObject;
 import com.bwa.controllers.response.bean.Menu;
 import com.bwa.controllers.response.bean.Status;
 import com.bwa.exceptions.CustomException;
+import com.bwa.exceptions.LoginException;
 import com.bwa.persistence.model.Customer;
 import com.bwa.persistence.model.SubMenu;
 import com.bwa.persistence.model.SubMenuItem;
@@ -32,6 +34,8 @@ public class LoginController {
     @Autowired private ILoginLogic loginLogic;
     @Autowired private LoginControllerValidation loginControllerValidation;
     @Autowired private IUtilityLogic utilityLogic;
+    @Autowired private ICustomerLogic customerLogic;
+
 
     @CrossOrigin
     @RequestMapping(value = "/signUp", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
@@ -84,7 +88,55 @@ public class LoginController {
         return AppUtils.convertToJson(response);
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @CrossOrigin
+    @RequestMapping(value = "/hasLoggedIn", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
+    @ResponseBody
+    public String hasLoggedIn(HttpServletRequest request) {
+
+        ResponseObject response=new ResponseObject();
+        String validationResponse =null;
+
+        try{
+
+            String userName = (String) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_KEY_USERNAME);
+            String idOrgUnit = (String) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID);
+            //validate logged in user
+            validationResponse=loginControllerValidation.validateLoginRequest(userName,idOrgUnit);
+
+            if(validationResponse.equals(CodeConstants.CODE_SUCCESS)) {
+
+                Customer customer = customerLogic.fetchCustomerByUserId(userName,idOrgUnit);
+                if(customer!=null){
+                    request.getSession().setAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID,customer.getId());
+                    request.getSession().setAttribute(Constants.SESSION_ATTRIBUTE_KEY_ROLE_ID,customer.getCustomerType().getStrRole());
+                }else {
+                    throw new LoginException(utilityLogic
+                            .fetchExceptionMsg(CodeConstants.ERROR_CODE_USER_NAME_DOES_NOT_EXIST,new Object[]{}));
+                }
+
+                Status status=new Status();
+                status.setCode(CodeConstants.CODE_SUCCESS);
+                status.setMsg(CodeConstants.CODE_SUCCESS_MSG);
+
+                response.setStatus(status);
+            }
+
+        } catch (CustomException e) {
+
+            LOG.info("Error : "+e.getMessage());
+
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED),e.getMessage()));
+        } catch (Exception e){
+            LOG.info("Error : "+e.getMessage());
+
+            response.setStatus(ControllerUtils.convertToStatus(
+                    Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
+        }
+
+        return AppUtils.convertToJson(response);
+    }
+//    @Transactional(propagation = Propagation.SUPPORTS)
     @CrossOrigin
     @RequestMapping(value = "/login", method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
     @ResponseBody
@@ -134,14 +186,15 @@ public class LoginController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/getNavMenu" , method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
+    @RequestMapping(value = "/fetchNavBar" , method = { RequestMethod.POST}, produces = Constants.APPLICATION_JSON)
     @ResponseBody
-    public String fetchNavMenu(HttpServletRequest request,
-                               @RequestParam("idRole") String idRole,
-                               @RequestParam(value = "customerId" ) Long customerId,
-                               @RequestParam("idOrgUnit") String idOrgUnit) {
+    public String fetchNavMenu(HttpServletRequest request) {
 
-        ResponseObject respone=new ResponseObject();
+        Long customerId = (Long) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID);
+        String idOrgUnit = (String) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID);
+        String idRole = (String) request.getSession().getAttribute(Constants.SESSION_ATTRIBUTE_KEY_ROLE_ID);
+
+        ResponseObject response=new ResponseObject();
         Menu menus=new Menu();
         String validationResponse =null;
         try {
@@ -237,20 +290,20 @@ public class LoginController {
                 status.setCode(CodeConstants.CODE_SUCCESS);
                 status.setMsg(CodeConstants.CODE_SUCCESS_MSG);
 
-                respone.setData(menus);
-                respone.setStatus(status);
+                response.setData(menus);
+                response.setStatus(status);
             }
 
         } catch (CustomException e) {
 
             LOG.info("Error : "+e.getMessage());
 
-            respone.setStatus(ControllerUtils.convertToStatus(
+            response.setStatus(ControllerUtils.convertToStatus(
                     Integer.toString(CodeConstants.ERROR_CODE_LOGIN_FAILED),e.getMessage()));
         } catch (Exception e){
             LOG.info("Error : "+e.getMessage());
 
-            respone.setStatus(ControllerUtils.convertToStatus(
+            response.setStatus(ControllerUtils.convertToStatus(
                     Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
         }
 

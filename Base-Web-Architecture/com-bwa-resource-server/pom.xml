@@ -204,6 +204,6 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>com-bwa-resource-server</finalName>
+        <finalName>base</finalName>
     </build>
 </project>

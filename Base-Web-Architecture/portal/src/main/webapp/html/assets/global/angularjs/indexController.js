@@ -5,12 +5,9 @@ indexApp.controller('indexController', function($scope,$http) {
 
     $http({
         method: 'POST',
-        url: 'http://localhost:8080/base/getNavMenu',
+        url: 'http://localhost:8080/base/fetchNavBar',
         headers: {'Content-Type': 'application/json'},
         params: {
-            'idRole': 'ROLE_TEST_CUSTOMER',
-            'customerId': 8,
-            'idOrgUnit': '01'
         }
     }).then(function mySuccess(response) {
         $scope.navMenuResponse = response.data;
