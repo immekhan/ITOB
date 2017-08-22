@@ -13,7 +13,7 @@ indexApp.controller('indexController', function($scope,$http) {
         $scope.navMenuResponse = response.data;
 
         if ($scope.navMenuResponse.status.code == '00') {
-            $scope.navBarMenu = response.data.menuBean;
+            $scope.navBarMenu = response.data.data.menuBean;
         } else {
            //todo logout etc on service not available
         }
