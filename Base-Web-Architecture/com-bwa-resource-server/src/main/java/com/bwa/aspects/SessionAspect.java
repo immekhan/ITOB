@@ -5,6 +5,7 @@ import com.bwa.controllers.response.ResponseObject;
 import com.bwa.exceptions.CustomException;
 import com.bwa.util.AppUtils;
 import com.bwa.util.CodeConstants;
+import com.bwa.util.Constants;
 import com.bwa.util.ControllerUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -58,8 +59,9 @@ public class SessionAspect {
             if (args[0] instanceof HttpServletRequest) {
 
                 HttpServletRequest request = (HttpServletRequest) args[0];
+                LOG.info("Session Aspect : Session Id  : "+request.getSession().getId());
                 //validate session
-//                sessionHandlerLogic.validatePersisted(request.getSession());
+                sessionHandlerLogic.validatePersisted(request.getSession());
                 //proceed with method exicution
                 jsonResponse =(String) proceedingJoinPoint.proceed();
             }
@@ -94,6 +96,9 @@ public class SessionAspect {
             if (args[0] instanceof HttpServletRequest) {
 
                 HttpServletRequest request = (HttpServletRequest) args[0];
+
+                LOG.info("persistSessionAfterSuccessLogin : Session Aspect : Session Id  : "+request.getSession().getId());
+
                 //proceed with login
                 jsonResponse =(String) proceedingJoinPoint.proceed();
 

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -31,13 +32,16 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
 
     @Transactional
     @Override
-    public void validatePersisted(HttpSession httpSession) throws SessionException {
+    public void validatePersisted(HttpSession httpSession) throws SessionException, ParseException {
+
+        SimpleDateFormat dateFormat= AppUtils.getDateFormatter(Constants.DAT_PATTERN);
 
         Optional<Session> sessionOpt=sessionRepository.findOne(httpSession.getId());
 
         Long customerId=(Long)httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID);
         String idOrgUnit=(String) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID);
-        Date dat_last_activity=(Date) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_DAT_LAST_ACTIVITY);
+        String str_last_activity=(String) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_DAT_LAST_ACTIVITY);
+        Date dat_last_activity=dateFormat.parse(str_last_activity);
 
         Date dat_current_date=new Date();
 
