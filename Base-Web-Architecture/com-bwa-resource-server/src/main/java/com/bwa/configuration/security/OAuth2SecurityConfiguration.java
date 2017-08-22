@@ -9,13 +9,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.authentication.session.*;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -67,6 +70,9 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.addFilterBefore(customUsernamePasswordAuthenticationFilter()
 				,UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().authenticationEntryPoint(urlAuthenticationEntryPoint());
+		http.sessionManagement().maximumSessions(10);
+		http.sessionManagement()
+				.sessionFixation().migrateSession();
 		/*http
 				.formLogin()
 				.loginPage("/login").permitAll();*/
@@ -91,7 +97,7 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		authFilter.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
 		authFilter.setAuthenticationFailureHandler(new CustomLoginFailureHandler());
 		authFilter.setAuthenticationManager(authenticationManager());
-
+		authFilter.setSessionAuthenticationStrategy(sas());
 		return authFilter;
 	}
 
@@ -106,6 +112,39 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
+	}
+
+	@Bean
+	public ConcurrentSessionControlAuthenticationStrategy concurrentSessionControlAuthenticationStrategy(){
+		ConcurrentSessionControlAuthenticationStrategy cscas=new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry());
+		cscas.setMaximumSessions(10);
+		cscas.setExceptionIfMaximumExceeded(true);
+		return cscas;
+	}
+
+	@Bean
+	public CompositeSessionAuthenticationStrategy sas(){
+		SessionFixationProtectionStrategy sfps=new SessionFixationProtectionStrategy();
+		RegisterSessionAuthenticationStrategy rsas=new RegisterSessionAuthenticationStrategy(sessionRegistry());
+
+		List<SessionAuthenticationStrategy> sasList=new ArrayList<SessionAuthenticationStrategy>();
+		sasList.add(concurrentSessionControlAuthenticationStrategy());
+		sasList.add(sfps);
+		sasList.add(rsas);
+
+		CompositeSessionAuthenticationStrategy sas= new CompositeSessionAuthenticationStrategy(sasList);
+		return sas;
+	}
+
+	@Bean
+	public SessionRegistry sessionRegistry(){
+		SessionRegistry sessionRegistry = new SessionRegistryImpl();
+		return sessionRegistry;
+	}
+
+	@Bean
+	public HttpSessionEventPublisher httpSessionEventPublisher() {
+		return new HttpSessionEventPublisher();
 	}
 
 	/*@Bean

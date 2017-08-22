@@ -59,7 +59,7 @@ public class SessionAspect {
 
                 HttpServletRequest request = (HttpServletRequest) args[0];
                 //validate session
-                sessionHandlerLogic.validatePersisted(request.getSession());
+//                sessionHandlerLogic.validatePersisted(request.getSession());
                 //proceed with method exicution
                 jsonResponse =(String) proceedingJoinPoint.proceed();
             }

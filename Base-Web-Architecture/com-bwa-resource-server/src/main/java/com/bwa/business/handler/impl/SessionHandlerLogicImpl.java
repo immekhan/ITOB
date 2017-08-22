@@ -36,7 +36,7 @@ public class SessionHandlerLogicImpl implements ISessionHandlerLogic {
         Optional<Session> sessionOpt=sessionRepository.findOne(httpSession.getId());
 
         Long customerId=(Long)httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID);
-        String idOrgUnit=(String) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_CUSTOMER_ID);
+        String idOrgUnit=(String) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_ORG_UNIT_ID);
         Date dat_last_activity=(Date) httpSession.getAttribute(Constants.SESSION_ATTRIBUTE_KEY_DAT_LAST_ACTIVITY);
 
         Date dat_current_date=new Date();

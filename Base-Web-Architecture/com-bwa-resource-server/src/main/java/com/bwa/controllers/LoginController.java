@@ -307,7 +307,7 @@ public class LoginController {
                     Integer.toString(CodeConstants.DEFAULT_EXCEPTION_CODE),CodeConstants.DEFAULT_EXCEPTION_MSG));
         }
 
-        return AppUtils.convertToJson(menus);
+        return AppUtils.convertToJson(response);
     }
 
     @CrossOrigin
